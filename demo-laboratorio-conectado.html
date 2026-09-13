@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio conectado</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#F4F6FA; --surface:#FFFFFF; --surface-2:#EDF0F6; --surface-3:#E3E8F1;
+  --line:#D6DDEA; --line-soft:#E6EAF3;
+  --ink:#1B2333; --ink-2:#3E4859; --muted:#6B7688;
+  --heading:#1B2A4A; --brand:#1B2A4A; --brand-2:#243758; --on-brand:#FFFFFF;
+  --orange:#F3931F; --orange-600:#E8720C; --orange-soft:#FDF0DD;
+  --ok:#1A7F52; --ok-bg:#E2F1E9; --warn:#9E610A; --warn-bg:#FAEDD8; --crit:#B3291E; --crit-bg:#FAE5E2;
+  --shadow-sm:0 1px 2px rgba(27,42,74,.07);
+  --shadow:0 1px 2px rgba(27,42,74,.06),0 10px 28px rgba(27,42,74,.09);
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,"Cascadia Mono",monospace;
+  --sans:Archivo,"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E1626; --surface:#16203A; --surface-2:#1C2845; --surface-3:#243354;
+    --line:#2D3C5E; --line-soft:#223052;
+    --ink:#E9EDF5; --ink-2:#C4CDDE; --muted:#8E9BB4;
+    --heading:#EAEFF8; --brand:#101B31; --brand-2:#1B2A4A; --on-brand:#FFFFFF;
+    --orange:#F3931F; --orange-600:#FFA83C; --orange-soft:#30230E;
+    --ok:#5FD19B; --ok-bg:#11301F; --warn:#EDB25B; --warn-bg:#352712; --crit:#FF8E7E; --crit-bg:#3A1815;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E1626; --surface:#16203A; --surface-2:#1C2845; --surface-3:#243354;
+  --line:#2D3C5E; --line-soft:#223052;
+  --ink:#E9EDF5; --ink-2:#C4CDDE; --muted:#8E9BB4;
+  --heading:#EAEFF8; --brand:#101B31; --brand-2:#1B2A4A; --on-brand:#FFFFFF;
+  --orange:#F3931F; --orange-600:#FFA83C; --orange-soft:#30230E;
+  --ok:#5FD19B; --ok-bg:#11301F; --warn:#EDB25B; --warn-bg:#352712; --crit:#FF8E7E; --crit-bg:#3A1815;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;color:var(--heading);text-wrap:balance;line-height:1.2}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}
+.rail{background:var(--brand);color:var(--on-brand);display:flex;flex-direction:column;gap:26px;padding-block:22px;padding-left:18px;padding-right:18px;position:sticky;top:0;height:100vh}
+.brand{display:flex;flex-direction:column;gap:3px}
+.brand .mark{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.16em;font-size:12px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--orange);flex:none}
+.brand .name{font-size:19px;font-weight:700;color:#fff;line-height:1.15;margin-top:8px}
+.brand .kind{font-size:11px;color:#9FB0CD;letter-spacing:.04em}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C9DBC;margin-bottom:6px}
+.nav button{display:flex;gap:11px;align-items:flex-start;text-align:left;width:100%;background:transparent;border:0;border-radius:8px;padding:10px 11px;cursor:pointer;color:#D3DCEB}
+.nav button:hover{background:rgba(255,255,255,.07)}
+.nav button[aria-current="true"]{background:var(--brand-2);color:#fff;box-shadow:inset 3px 0 0 var(--orange)}
+.nav .idx{font-family:var(--mono);font-size:11px;color:var(--orange);padding-top:2px}
+.nav .t{font-size:13.5px;font-weight:600;display:block}
+.nav .d{font-size:11px;color:#93A4C2;display:block;margin-top:1px}
+.rail-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+.demo-badge{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9FB0CD}
+.demo-badge i{width:6px;height:6px;border-radius:50%;background:var(--orange);display:block}
+.rail-foot .mini{background:rgba(255,255,255,.08);border:0;border-radius:7px;padding:8px 10px;font-size:12px;color:#E2E8F3;cursor:pointer;text-align:left}
+.rail-foot .mini:hover{background:rgba(255,255,255,.16)}
+
+.main{min-width:0;padding-block:26px 40px;padding-left:30px;padding-right:30px;display:flex;flex-direction:column;gap:20px}
+.view{display:none;flex-direction:column;gap:20px}
+.view.on{display:flex}
+.vhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.vhead .eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-600);font-weight:600}
+.vhead h1{font-size:25px;margin-top:5px}
+.vhead .sub{color:var(--muted);font-size:13.5px;margin-top:4px;max-width:72ch}
+.vhead .aside{font-size:11.5px;color:var(--muted);text-align:right;font-family:var(--mono)}
+
+/* ---------- generic ---------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+.panel-h{padding:14px 18px;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.panel-h h3{font-size:14px;letter-spacing:.01em}
+.panel-h .note{font-size:11.5px;color:var(--muted)}
+.btn{border:1px solid transparent;border-radius:8px;padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;background:var(--orange);color:#fff;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{background:var(--orange-600)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink-2)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.navy{background:var(--brand-2);color:#fff}
+.btn.navy:hover{background:var(--brand)}
+.btn.sm{padding:6px 11px;font-size:12px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.crit{background:var(--crit-bg);color:var(--crit)}
+.pill.code{font-family:var(--mono);background:var(--brand);color:#fff;letter-spacing:.02em;border-radius:5px;font-weight:500}
+.pill.soft{background:var(--orange-soft);color:var(--orange-600)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.chip:hover{border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:13px}
+.scroll{overflow:auto}
+
+/* ---------- módulo 1 ---------- */
+.m1{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.ctx{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.ctx > div{padding:10px 16px;border-right:1px solid var(--line-soft);flex:1;min-width:150px}
+.ctx > div:last-child{border-right:0}
+.ctx .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ctx .v{font-size:13px;font-weight:600;color:var(--ink);margin-top:2px}
+.searchbox{position:relative;padding:16px 18px 0}
+.searchbox input{width:100%;border:1.5px solid var(--line);background:var(--surface-2);border-radius:9px;padding:13px 15px 13px 40px;font:inherit;font-size:15px;color:var(--ink)}
+.searchbox input::placeholder{color:var(--muted)}
+.searchbox input:focus{outline:none;border-color:var(--orange);background:var(--surface)}
+.searchbox svg{position:absolute;left:32px;top:31px;width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2}
+.filters{padding:13px 18px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line-soft)}
+.filters .lead{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:2px;align-self:center}
+.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.reslist{max-height:calc(100vh - 400px);min-height:320px;overflow:auto}
+.res{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line-soft);align-items:start}
+.res:last-child{border-bottom:0}
+.res:hover{background:var(--surface-2)}
+.res.added{background:var(--orange-soft)}
+.res .code{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);background:var(--surface-3);border-radius:5px;padding:3px 6px;text-align:center;letter-spacing:-.01em}
+.res.added .code{background:var(--orange);color:#fff}
+.res .nm{font-size:14px;font-weight:600;color:var(--ink)}
+.res .dims{display:flex;flex-wrap:wrap;gap:0 10px;margin-top:3px;font-size:12px;color:var(--ink-2)}
+.res .dims span{position:relative;padding-left:11px}
+.res .dims span::before{content:"";position:absolute;left:3px;top:8px;width:3px;height:3px;border-radius:50%;background:var(--orange)}
+.res .dims span:first-child{padding-left:0}
+.res .dims span:first-child::before{display:none}
+.res .meta{margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11px;color:var(--muted)}
+.res .meta .std{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--muted)}
+.addbtn{border:1px solid var(--line);background:var(--surface);width:30px;height:30px;border-radius:8px;font-size:17px;line-height:1;cursor:pointer;color:var(--ink-2);flex:none}
+.addbtn:hover{background:var(--orange);border-color:var(--orange);color:#fff}
+.addbtn[data-in="1"]{background:var(--orange);border-color:var(--orange);color:#fff}
+.starbtn{border:0;background:transparent;cursor:pointer;color:var(--muted);font-size:14px;padding:0 2px;line-height:1}
+.starbtn[data-fav="1"]{color:var(--orange)}
+
+.order{position:sticky;top:26px;display:flex;flex-direction:column;max-height:calc(100vh - 52px)}
+.order .items{overflow:auto;flex:1;min-height:80px}
+.oitem{display:flex;gap:10px;padding:9px 16px;border-bottom:1px solid var(--line-soft);align-items:flex-start}
+.oitem .c{font-family:var(--mono);font-size:11px;color:var(--orange-600);padding-top:2px;flex:none;width:62px}
+.oitem .t{flex:1;min-width:0;font-size:12.5px;line-height:1.35}
+.oitem .t b{font-weight:600;display:block;color:var(--ink)}
+.oitem .t span{color:var(--muted);font-size:11.5px}
+.oitem .x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:2px 3px}
+.oitem .x:hover{color:var(--crit)}
+.pre{padding:12px 16px;background:var(--surface-2);border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px}
+.pre .ln{display:flex;gap:8px}
+.pre .ln b{color:var(--heading);font-weight:600;flex:none;min-width:62px}
+.order-foot{padding:14px 16px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:9px}
+.order-foot .cmp{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+
+/* ---------- dialogs ---------- */
+.overlay{position:fixed;inset:0;background:rgba(12,20,38,.62);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40;backdrop-filter:blur(2px)}
+.overlay[hidden]{display:none}
+.modal{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);max-width:880px;width:100%;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+.modal.narrow{max-width:470px}
+.modal-h{padding:18px 24px;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.modal-h h2{font-size:18px}
+.modal-h .s{font-size:12.5px;color:var(--muted);margin-top:3px}
+.modal-b{padding:20px 24px;overflow:auto}
+.modal-f{padding:14px 24px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface-2)}
+.closex{border:0;background:var(--surface-2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--ink-2);flex:none}
+.closex:hover{background:var(--surface-3)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.split > div{padding:16px 18px}
+.split > div:first-child{border-right:1px solid var(--line);background:var(--surface-2)}
+.split h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.freetext{font-size:13px;color:var(--ink-2);line-height:1.7;font-family:var(--mono);font-size:12px}
+.freetext .bad{color:var(--crit);border-bottom:1.5px dotted var(--crit)}
+.tube{margin-bottom:14px}
+.tube:last-child{margin-bottom:0}
+.tube .th{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:var(--heading);margin-bottom:6px}
+.tube .swatch{width:9px;height:16px;border-radius:2px;flex:none;border:1px solid rgba(0,0,0,.15)}
+.tube ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.tube li{display:flex;gap:8px;font-size:12px;align-items:baseline}
+.tube li .c{font-family:var(--mono);font-size:10.5px;color:#fff;background:var(--brand);border-radius:4px;padding:1px 5px;flex:none}
+
+/* ---------- módulo 2 ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;display:flex;flex-direction:column;gap:2px}
+.kpi .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:var(--mono);font-size:29px;font-weight:600;color:var(--heading);line-height:1.1;margin-top:6px;letter-spacing:-.02em}
+.kpi .d{font-size:11.5px;color:var(--muted)}
+.kpi.accent .v{color:var(--orange-600)}
+.kpi.alert{border-color:var(--warn)}
+.kpi.alert .v{color:var(--warn)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line)}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;padding:9px 14px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--heading);border-bottom-color:var(--orange)}
+.tabs button:hover{color:var(--ink)}
+.offers{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.offer{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px 14px;display:flex;flex-direction:column;gap:11px;position:relative;overflow:hidden}
+.offer::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ok)}
+.offer.w::before{background:var(--warn)} .offer.c::before{background:var(--crit)}
+.offer .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.offer h4{font-size:14.5px;line-height:1.25}
+.offer .pres{font-size:11.5px;color:var(--muted);margin-top:2px}
+.offer .nums{display:flex;gap:18px;padding:10px 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.offer .n{display:flex;flex-direction:column}
+.offer .n .nv{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--heading);line-height:1.1}
+.offer .n .nk{font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.offer .n.price .nv{font-size:16px;color:var(--ink-2)}
+.offer .lot{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.offer .bot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto}
+.offer .who{font-size:11.5px;color:var(--ink-2);line-height:1.3}
+.offer .who b{font-weight:600;color:var(--ink);display:block}
+.offer.mine{border-color:var(--brand-2)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table.data{border-collapse:collapse;width:100%;min-width:640px;font-size:12.5px}
+table.data th{background:var(--brand);color:var(--on-brand);text-align:left;padding:9px 13px;font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+table.data td{padding:9px 13px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+table.data tr:last-child td{border-bottom:0}
+table.data tr.new td{background:var(--orange-soft)}
+.num-in{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;width:fit-content}
+.num-in button{width:36px;height:38px;border:0;background:var(--surface-2);cursor:pointer;font-size:17px;color:var(--ink-2)}
+.num-in button:hover{background:var(--surface-3)}
+.num-in input{width:76px;border:0;text-align:center;font-family:var(--mono);font-size:16px;padding:9px 0;background:var(--surface);color:var(--ink)}
+.num-in input:focus{outline:none}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.field input,.field select{border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px;background:var(--surface);color:var(--ink);width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sum{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px;background:var(--surface-2);border-radius:var(--r);margin-top:16px}
+.sum .l{font-size:12px;color:var(--muted)}
+.sum .r{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--heading)}
+
+/* ---------- trazabilidad ---------- */
+.trace{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.tl{padding:18px 20px;display:flex;flex-direction:column;gap:0}
+.ev{display:grid;grid-template-columns:20px minmax(0,1fr);gap:14px;position:relative;padding-bottom:18px}
+.ev:last-child{padding-bottom:0}
+.ev::before{content:"";position:absolute;left:9px;top:18px;bottom:0;width:2px;background:var(--line)}
+.ev:last-child::before{display:none}
+.ev .bullet{width:20px;height:20px;border-radius:50%;background:var(--surface);border:2px solid var(--orange);z-index:1;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--orange);font-weight:700}
+.ev.done .bullet{background:var(--orange);color:#fff}
+.ev.pend .bullet{border-color:var(--line);color:var(--muted)}
+.ev .when{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.ev .what{font-size:13.5px;font-weight:600;color:var(--heading);margin-top:1px}
+.ev .det{font-size:12px;color:var(--ink-2);margin-top:3px}
+.ev .key{display:inline-flex;font-family:var(--mono);font-size:10.5px;background:var(--brand);color:#fff;border-radius:4px;padding:1px 6px;margin-top:6px}
+.ev .key.lot{background:var(--orange)}
+.band{background:var(--surface-3);border-radius:var(--r);padding:15px 20px;font-size:13px;color:var(--ink-2);display:flex;gap:26px;flex-wrap:wrap}
+.band b{color:var(--heading)}
+.band > div{flex:1;min-width:240px}
+
+/* ---------- guion ---------- */
+.guion ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:11px;font-size:13.5px;color:var(--ink-2)}
+.guion li::marker{color:var(--orange);font-weight:700}
+.guion b{color:var(--heading)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;padding:11px 20px;border-radius:9px;font-size:13px;box-shadow:var(--shadow);z-index:60;display:flex;align-items:center;gap:10px}
+.toast[hidden]{display:none}
+.toast i{width:7px;height:7px;border-radius:50%;background:var(--orange);display:block;flex:none}
+
+@media (prefers-reduced-motion:no-preference){
+  .res,.offer,.chip,.btn,.addbtn{transition:background-color .13s ease,border-color .13s ease,color .13s ease}
+}
+@media (max-width:1180px){
+  .m1{grid-template-columns:1fr}
+  .order{position:static;max-height:none}
+  .trace{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .rail{position:static;height:auto;flex-direction:column;gap:16px}
+  .nav{flex-direction:row;overflow-x:auto;gap:8px}
+  .nav .lbl{display:none}
+  .nav button{white-space:nowrap}
+  .nav .d{display:none}
+  .rail-foot{flex-direction:row;margin-top:0}
+  .main{padding-left:16px;padding-right:16px}
+  .split{grid-template-columns:1fr}
+  .split > div:first-child{border-right:0;border-bottom:1px solid var(--line)}
+  .grid2{grid-template-columns:1fr}
+  .reslist{max-height:none}
+  .res{grid-template-columns:1fr auto;gap:8px}
+  .res .code{grid-column:1;justify-self:start;padding:2px 6px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="rail">
+  <div class="brand">
+    <div class="mark"><span class="dot"></span> EISPLUS</div>
+    <div class="name">Laboratorio<br>conectado</div>
+    <div class="kind">Prototipo funcional</div>
+  </div>
+
+  <nav class="nav" aria-label="Módulos">
+    <span class="lbl">Módulos</span>
+    <button data-view="m1" aria-current="true"><span class="idx">01</span><span><span class="t">Catálogo y receta</span><span class="d">Indicar análisis</span></span></button>
+    <button data-view="m2"><span class="idx">02</span><span><span class="t">Bolsa de reactivos</span><span class="d">Publicar y consumir</span></span></button>
+    <button data-view="tz"><span class="idx">→</span><span><span class="t">Trazabilidad</span><span class="d">Código y lote end to end</span></span></button>
+  </nav>
+
+  <div class="rail-foot">
+    <span class="demo-badge"><i></i> Datos de ejemplo</span>
+    <button class="mini" id="btnGuion">Guion de demostración</button>
+    <button class="mini" id="btnReset">Reiniciar demo</button>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ═══════════ MÓDULO 1 ═══════════ -->
+<section class="view on" id="view-m1">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Módulo 1</div>
+      <h1>Catálogo maestro en la receta electrónica</h1>
+      <p class="sub">El médico busca sobre el catálogo tipificado y la orden viaja con el código único de cada registro. Ninguna indicación sale como texto libre.</p>
+    </div>
+    <div class="aside"><span id="catCount">0</span> registros en esta demo<br>~10.000 en el catálogo completo</div>
+  </div>
+
+  <div class="ctx">
+    <div><div class="k">Profesional</div><div class="v">Dra. L. Ibarra · MP 8421</div></div>
+    <div><div class="k">Especialidad</div><div class="v">Clínica médica</div></div>
+    <div><div class="k">Paciente</div><div class="v">M. A. Fernández · 54 a · F</div></div>
+    <div><div class="k">Cobertura</div><div class="v">OSEP · Afil. 3120-44</div></div>
+  </div>
+
+  <div class="m1">
+    <div class="panel">
+      <div class="searchbox">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input id="q" type="search" autocomplete="off" placeholder="Buscar análisis: nombre, sinónimo, código, método…" aria-label="Buscar en el catálogo">
+      </div>
+      <div class="filters">
+        <div class="frow"><span class="lead">Área</span><div class="chips" id="areaChips"></div></div>
+        <div class="frow"><span class="lead">Perfiles</span><div class="chips" id="perfChips"></div></div>
+      </div>
+      <div class="panel-h" style="border-bottom:1px solid var(--line-soft);border-top:0">
+        <h3 id="resTitle">Resultados</h3>
+        <span class="note" id="resNote"></span>
+      </div>
+      <div class="reslist" id="results"></div>
+    </div>
+
+    <div class="panel order">
+      <div class="panel-h">
+        <h3>Orden en preparación</h3>
+        <span class="pill" id="ordCount">0 estudios</span>
+      </div>
+      <div class="items" id="ordItems"></div>
+      <div class="pre" id="ordPre" hidden></div>
+      <div class="order-foot">
+        <div class="cmp"><span>Codificados</span><span class="mono" id="ordPct">—</span></div>
+        <div class="cmp"><span>Texto libre</span><span class="mono">0 ítems</span></div>
+        <button class="btn" id="btnEmit" disabled>Emitir orden</button>
+        <button class="btn ghost sm" id="btnClear" disabled>Vaciar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MÓDULO 2 ═══════════ -->
+<section class="view" id="view-m2">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Módulo 2 · sobre ARCION</div>
+      <h1>Bolsa de reactivos en red</h1>
+      <p class="sub">Cada laboratorio publica las determinaciones que no va a usar antes del vencimiento. La red las encuentra, reserva y paga por adelantado sólo lo que consume.</p>
+    </div>
+    <div class="aside">Red Mendoza · <span id="labCount">0</span> laboratorios<br>Nodo activo: Lab. Bioanálisis Cuyo</div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="red">Ofertas de la red</button>
+    <button role="tab" aria-selected="false" data-tab="mias">Mis publicaciones</button>
+    <button role="tab" aria-selected="false" data-tab="mov">Movimientos y liquidación</button>
+  </div>
+
+  <div id="tab-red">
+    <div class="offers" id="offersRed"></div>
+  </div>
+
+  <div id="tab-mias" hidden>
+    <div class="panel-h" style="border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin-bottom:14px">
+      <div><h3>Excedentes publicados por mi laboratorio</h3><span class="note">Lo que ofrezco a la red, con lote, vencimiento y precio por determinación.</span></div>
+      <button class="btn sm" id="btnPub">Publicar excedente</button>
+    </div>
+    <div class="offers" id="offersMias"></div>
+  </div>
+
+  <div id="tab-mov" hidden>
+    <div class="tbl-wrap">
+      <table class="data">
+        <thead><tr><th>Fecha</th><th>Operación</th><th>Reactivo</th><th>Lote</th><th class="tnum">Det.</th><th class="tnum">Importe</th><th>Contraparte</th><th>Estado</th></tr></thead>
+        <tbody id="movBody"></tbody>
+      </table>
+    </div>
+    <p class="sub" style="color:var(--muted);font-size:12px;margin-top:10px">Importes en pesos, valores de ejemplo. El pago es previo al consumo: la plataforma lo retiene y lo libera al laboratorio publicador cuando se registra la determinación.</p>
+  </div>
+</section>
+
+<!-- ═══════════ TRAZABILIDAD ═══════════ -->
+<section class="view" id="view-tz">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Capa común</div>
+      <h1>Trazabilidad end to end</h1>
+      <p class="sub">El mismo código de análisis desde la indicación hasta el informe; el mismo lote de reactivo desde la publicación hasta el consumo. Los dos hilos se cruzan en el momento del procesamiento.</p>
+    </div>
+    <div class="aside" id="tzRef"></div>
+  </div>
+
+  <div class="trace">
+    <div class="panel">
+      <div class="panel-h"><h3>Hilo 1 · Código del análisis</h3><span class="note">Módulo 1 → receta electrónica</span></div>
+      <div class="tl" id="tlAnalisis"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h3>Hilo 2 · Lote del reactivo</h3><span class="note">Módulo 2 → ARCION</span></div>
+      <div class="tl" id="tlReactivo"></div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div><b>Un solo lenguaje.</b> El código <span class="mono">GLU-004</span> significa lo mismo para el médico que lo indica, para el sistema que transporta la orden y para el bioquímico que informa el resultado.</div>
+    <div><b>Un solo lote.</b> Cada determinación consumida descuenta del lote publicado y queda asociada al informe, con laboratorio de origen y fecha de vencimiento.</div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ═══════════ Diálogo: orden emitida ═══════════ -->
+<div class="overlay" id="ovOrden" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ordenTitle">
+    <div class="modal-h">
+      <div><h2 id="ordenTitle">Orden emitida</h2><p class="s" id="ordenSub"></p></div>
+      <button class="closex" data-close>✕</button>
+    </div>
+    <div class="modal-b">
+      <div class="split">
+        <div>
+          <h4>Antes · indicación en texto libre</h4>
+          <div class="freetext" id="antesTxt"></div>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:14px">El laboratorio interpreta el momento de la toma, el método y la muestra. Cada interpretación es una llamada al consultorio o un resultado que no se puede comparar con el anterior.</p>
+        </div>
+        <div>
+          <h4>Ahora · orden codificada por tubo</h4>
+          <div id="tubos"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px" id="ordenStats"></div>
+      <div style="margin-top:16px;padding:13px 16px;background:var(--surface-2);border-radius:var(--r);font-size:12.5px;color:var(--ink-2)" id="ordenPre"></div>
+    </div>
+    <div class="modal-f">
+      <span class="note" style="font-size:11.5px;color:var(--muted)">La orden viaja por la plataforma de receta electrónica con los códigos, no con el texto.</span>
+      <span style="display:flex;gap:9px"><button class="btn ghost sm" data-close>Cerrar</button><button class="btn sm" id="btnVerTraza">Ver trazabilidad</button></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Diálogo: reservar ═══════════ -->
+<div class="overlay" id="ovRes" hidden>
+  <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="resTitleM">
+    <div class="modal-h">
+      <div><h2 id="resTitleM">Reservar determinaciones</h2><p class="s" id="resSub"></p></div>
+      <button class="closex" data-close>✕</button>
+    </div>
+    <div class="modal-b">
+      <div id="resInfo" style="display:flex;flex-direction:column;gap:9px;font-size:12.5px;margin-bottom:18px"></div>
+      <div class="field">
+        <label for="resQty">Determinaciones a reservar</label>
+        <div class="num-in">
+          <button type="button" id="resMinus" aria-label="Menos">−</button>
+          <input id="resQty" type="text" inputmode="numeric" value="10">
+          <button type="button" id="resPlus" aria-label="Más">+</button>
+        </div>
+        <span class="note" style="font-size:11.5px;color:var(--muted)" id="resRule"></span>
+      </div>
+      <div class="sum"><span class="l">Pago previo<br><span style="font-size:11px">se acredita al consumir</span></span><span class="r" id="resTotal">$ 0</span></div>
+      <div class="sum" style="background:var(--ok-bg);margin-top:9px"><span class="l" style="color:var(--ok)">Ahorro frente a comprar el kit completo</span><span class="r" style="color:var(--ok);font-size:18px" id="resAhorro">$ 0</span></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn ghost sm" data-close>Cancelar</button>
+      <button class="btn" id="btnResOk">Pagar y reservar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Diálogo: publicar ═══════════ -->
+<div class="overlay" id="ovPub" hidden>
+  <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="pubTitle">
+    <div class="modal-h">
+      <div><h2 id="pubTitle">Publicar excedente</h2><p class="s">Lo que cargue acá lo ve toda la red de inmediato.</p></div>
+      <button class="closex" data-close>✕</button>
+    </div>
+    <div class="modal-b">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="field"><label for="pubReac">Reactivo</label><input id="pubReac" value="Ferritina · quimioluminiscencia"></div>
+        <div class="grid2">
+          <div class="field"><label for="pubLote">Lote</label><input id="pubLote" class="mono" value="FER-2604-B"></div>
+          <div class="field"><label for="pubVto">Vencimiento</label><input id="pubVto" type="date"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="pubDet">Determinaciones disponibles</label><input id="pubDet" type="text" inputmode="numeric" value="18"></div>
+          <div class="field"><label for="pubPre">Precio por determinación</label><input id="pubPre" type="text" inputmode="numeric" value="5200"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="pubCond">Conservación</label><select id="pubCond"><option>2 – 8 °C</option><option>15 – 30 °C</option><option>−20 °C</option></select></div>
+          <div class="field"><label for="pubFrac">Fracción mínima</label><select id="pubFrac"><option value="1">1 determinación</option><option value="5" selected>5 determinaciones</option><option value="10">10 determinaciones</option></select></div>
+        </div>
+        <div class="field"><label for="pubEnv">Estado del envase</label><select id="pubEnv"><option>Envase cerrado</option><option>Envase abierto</option></select></div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn ghost sm" data-close>Cancelar</button>
+      <button class="btn" id="btnPubOk">Publicar en la red</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ Diálogo: guion ═══════════ -->
+<div class="overlay" id="ovGuion" hidden>
+  <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="guionTitle">
+    <div class="modal-h">
+      <div><h2 id="guionTitle">Guion de demostración</h2><p class="s">Cinco minutos, en este orden.</p></div>
+      <button class="closex" data-close>✕</button>
+    </div>
+    <div class="modal-b guion">
+      <ol>
+        <li>Buscá <b>“azúcar”</b> en el catálogo: el sinónimo encuentra glucemia y aparecen las cuatro variantes de la curva, cada una con su momento y método. <b>Esto es lo que hoy no existe.</b></li>
+        <li>Aplicá el perfil <b>PTOG 75 g · curva completa</b>: cuatro registros exactos en un clic, con los tiempos de extracción ya definidos.</li>
+        <li>Agregá <b>HbA1c</b> y <b>Perfil lipídico</b> y emití la orden. Mostrá la comparación: a la izquierda lo que llega hoy en texto libre, a la derecha la orden por tubo con código.</li>
+        <li>Pasá al <b>Módulo 2</b>. Señalá el kit de TSH que vence en menos de dos semanas: 40 determinaciones que hoy se tiran. Reservá 20 y mostrá el pago previo y el ahorro.</li>
+        <li>Cerrá en <b>Trazabilidad</b>: el código que indicó el médico y el lote que reservó el laboratorio se encuentran en el mismo informe.</li>
+      </ol>
+      <p style="margin-top:18px;font-size:12px;color:var(--muted)">Todos los datos son de ejemplo. El catálogo de esta demo es un subconjunto representativo del volumen real propuesto.</p>
+    </div>
+    <div class="modal-f"><span></span><button class="btn sm" data-close>Entendido</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden><i></i><span id="toastTxt"></span></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   DATOS DE DEMOSTRACIÓN
+   Subconjunto representativo del catálogo maestro propuesto.
+   Cada registro es una combinación válida de analito + momento +
+   método + muestra + unidad, con su código único y su mapeo a
+   nomencladores de referencia (NBU / LOINC).
+   ══════════════════════════════════════════════════════════════ */
+
+const TUBOS = {
+  suero:    {n:"Suero · tubo con gel separador",    col:"#E0B93C"},
+  edta:     {n:"Sangre entera · EDTA",              col:"#A98BCB"},
+  citrato:  {n:"Plasma · citrato de sodio",         col:"#6FAFD6"},
+  fluoruro: {n:"Plasma · fluoruro de sodio",        col:"#98A2B0"},
+  heparina: {n:"Sangre entera · heparina de litio", col:"#5FAE7C"},
+  orina:    {n:"Orina · frasco estéril",            col:"#D9BE55"},
+  orina24:  {n:"Orina de 24 horas · recolección",   col:"#B08D1E"},
+  calc:     {n:"Sin muestra adicional · calculado", col:"#C3C9D4"}
+};
+
+const AREAS = ["Química clínica","Endocrinología","Hematología","Coagulación","Orina","Inmunoserología"];
+
+const CATALOGO = [
+/* ── Glucemia e hidratos de carbono ──────────────────────────── */
+{c:"GLU-001",ar:"Química clínica",a:"Glucemia",mom:"Basal · ayuno 8 h",met:"Enzimático · hexoquinasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"70 – 99",ay:8,nbu:"660011",loinc:"2345-7",s:"azucar glucosa glicemia ayunas"},
+{c:"GLU-002",ar:"Química clínica",a:"Glucemia",mom:"30 min post carga 75 g",met:"Enzimático · hexoquinasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 200",ay:8,nbu:"660011",loinc:"20438-8",s:"azucar curva ptog sobrecarga tolerancia"},
+{c:"GLU-003",ar:"Química clínica",a:"Glucemia",mom:"60 min post carga 75 g",met:"Enzimático · hexoquinasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 200",ay:8,nbu:"660011",loinc:"20437-0",s:"azucar curva ptog sobrecarga tolerancia"},
+{c:"GLU-004",ar:"Química clínica",a:"Glucemia",mom:"120 min post carga 75 g",met:"Enzimático · hexoquinasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 140",ay:8,nbu:"660011",loinc:"6689-4",s:"azucar curva ptog sobrecarga tolerancia dos horas"},
+{c:"GLU-011",ar:"Química clínica",a:"Glucemia",mom:"Basal · ayuno 8 h",met:"Glucosa oxidasa · GOD-POD",mu:"Suero",t:"suero",u:"mg/dL",vr:"70 – 99",ay:8,nbu:"660011",loinc:"2345-7",s:"azucar glucosa god pod"},
+{c:"GLU-021",ar:"Química clínica",a:"Glucemia",mom:"Basal · ayuno 8 h",met:"Enzimático · hexoquinasa",mu:"Plasma con fluoruro",t:"fluoruro",u:"mg/dL",vr:"70 – 99",ay:8,nbu:"660011",loinc:"14749-6",s:"azucar glucosa fluoruro plasma glucolisis"},
+{c:"GLU-031",ar:"Química clínica",a:"Glucemia",mom:"Aleatoria · sin ayuno",met:"Enzimático · hexoquinasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 140",ay:0,nbu:"660011",loinc:"2345-7",s:"azucar glucosa al azar casual"},
+{c:"HBA-001",ar:"Química clínica",a:"Hemoglobina glicosilada A1c",mom:"Sin requisito de ayuno",met:"HPLC de intercambio iónico",mu:"Sangre entera EDTA",t:"edta",u:"% NGSP",vr:"< 5,7",ay:0,nbu:"660412",loinc:"4548-4",s:"a1c hba1c glicosilada glicada diabetes control"},
+{c:"HBA-002",ar:"Química clínica",a:"Hemoglobina glicosilada A1c",mom:"Sin requisito de ayuno",met:"Inmunoturbidimetría",mu:"Sangre entera EDTA",t:"edta",u:"% NGSP",vr:"< 5,7",ay:0,nbu:"660412",loinc:"4548-4",s:"a1c hba1c glicosilada glicada turbidimetria"},
+{c:"INS-001",ar:"Endocrinología",a:"Insulinemia",mom:"Basal · ayuno 8 h",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µUI/mL",vr:"2,6 – 24,9",ay:8,nbu:"661220",loinc:"20448-7",s:"insulina insulinemia resistencia homa"},
+{c:"INS-004",ar:"Endocrinología",a:"Insulinemia",mom:"120 min post carga 75 g",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µUI/mL",vr:"< 60",ay:8,nbu:"661220",loinc:"20448-7",s:"insulina curva sobrecarga post carga"},
+{c:"HOM-001",ar:"Endocrinología",a:"Índice HOMA-IR",mom:"Derivado de valores basales",met:"Calculado · glucemia × insulinemia / 405",mu:"Sin muestra adicional",t:"calc",u:"índice",vr:"< 2,5",ay:8,nbu:"—",loinc:"—",s:"homa resistencia insulinica indice calculado"},
+
+/* ── Función renal ───────────────────────────────────────────── */
+{c:"URE-001",ar:"Química clínica",a:"Urea",mom:"Basal",met:"Ureasa · GLDH cinético UV",mu:"Suero",t:"suero",u:"mg/dL",vr:"15 – 45",ay:8,nbu:"660311",loinc:"22664-7",s:"urea uremia nitrogeno renal"},
+{c:"CRE-001",ar:"Química clínica",a:"Creatinina",mom:"Basal",met:"Jaffé cinético compensado",mu:"Suero",t:"suero",u:"mg/dL",vr:"0,55 – 1,02",ay:8,nbu:"660211",loinc:"2160-0",s:"creatinina creatininemia renal jaffe rinon"},
+{c:"CRE-002",ar:"Química clínica",a:"Creatinina",mom:"Basal",met:"Enzimático · trazable a IDMS",mu:"Suero",t:"suero",u:"mg/dL",vr:"0,55 – 1,02",ay:8,nbu:"660211",loinc:"38483-4",s:"creatinina enzimatica idms renal"},
+{c:"CRE-024",ar:"Orina",a:"Creatininuria",mom:"Orina de 24 h",met:"Jaffé cinético compensado",mu:"Orina de 24 h",t:"orina24",u:"mg/24 h",vr:"740 – 1570",ay:0,nbu:"660212",loinc:"2162-6",s:"creatinina orina 24 horas creatininuria"},
+{c:"FGE-001",ar:"Química clínica",a:"Filtrado glomerular estimado",mom:"Derivado de creatinina",met:"Calculado · CKD-EPI 2021",mu:"Sin muestra adicional",t:"calc",u:"mL/min/1,73 m²",vr:"≥ 90",ay:0,nbu:"—",loinc:"98979-8",s:"fge vfg ckd epi filtrado glomerular estimado"},
+{c:"CLE-001",ar:"Orina",a:"Clearance de creatinina",mom:"Suero + orina de 24 h",met:"Depuración medida",mu:"Suero y orina de 24 h",t:"orina24",u:"mL/min/1,73 m²",vr:"88 – 128",ay:0,nbu:"660213",loinc:"2164-2",s:"clearance depuracion creatinina 24 horas"},
+{c:"URI-001",ar:"Química clínica",a:"Ácido úrico",mom:"Basal",met:"Uricasa · peroxidasa",mu:"Suero",t:"suero",u:"mg/dL",vr:"2,4 – 5,7",ay:8,nbu:"660121",loinc:"3084-1",s:"acido urico uricemia gota purinas"},
+
+/* ── Perfil lipídico ─────────────────────────────────────────── */
+{c:"COL-001",ar:"Química clínica",a:"Colesterol total",mom:"Ayuno 12 h",met:"Enzimático · CHOD-PAP",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 200",ay:12,nbu:"660511",loinc:"2093-3",s:"colesterol total lipidos lipidograma"},
+{c:"HDL-001",ar:"Química clínica",a:"Colesterol HDL",mom:"Ayuno 12 h",met:"Directo homogéneo",mu:"Suero",t:"suero",u:"mg/dL",vr:"> 50 (mujer)",ay:12,nbu:"660512",loinc:"2085-9",s:"hdl colesterol bueno lipidos"},
+{c:"TRI-001",ar:"Química clínica",a:"Triglicéridos",mom:"Ayuno 12 h",met:"Enzimático · GPO-PAP",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 150",ay:12,nbu:"660513",loinc:"2571-8",s:"trigliceridos tg lipidos grasas"},
+{c:"LDL-001",ar:"Química clínica",a:"Colesterol LDL",mom:"Derivado · requiere TG < 400",met:"Fórmula de Friedewald",mu:"Sin muestra adicional",t:"calc",u:"mg/dL",vr:"< 100",ay:12,nbu:"660514",loinc:"13457-7",s:"ldl colesterol malo friedewald calculado"},
+{c:"LDL-002",ar:"Química clínica",a:"Colesterol LDL",mom:"Ayuno 12 h",met:"Directo homogéneo",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 100",ay:12,nbu:"660514",loinc:"18262-6",s:"ldl directo colesterol hipertrigliceridemia"},
+{c:"NHD-001",ar:"Química clínica",a:"Colesterol no-HDL",mom:"Derivado",met:"Calculado · total − HDL",mu:"Sin muestra adicional",t:"calc",u:"mg/dL",vr:"< 130",ay:12,nbu:"—",loinc:"43396-1",s:"no hdl colesterol residual riesgo"},
+
+/* ── Hepatograma y enzimas ───────────────────────────────────── */
+{c:"TGO-001",ar:"Química clínica",a:"TGO / AST",mom:"Basal",met:"IFCC sin piridoxal fosfato",mu:"Suero",t:"suero",u:"U/L",vr:"< 32",ay:8,nbu:"660611",loinc:"1920-8",s:"tgo ast got transaminasas higado hepatograma"},
+{c:"TGP-001",ar:"Química clínica",a:"TGP / ALT",mom:"Basal",met:"IFCC sin piridoxal fosfato",mu:"Suero",t:"suero",u:"U/L",vr:"< 33",ay:8,nbu:"660612",loinc:"1742-6",s:"tgp alt gpt transaminasas higado hepatograma"},
+{c:"FAL-001",ar:"Química clínica",a:"Fosfatasa alcalina",mom:"Basal",met:"IFCC · AMP",mu:"Suero",t:"suero",u:"U/L",vr:"35 – 104",ay:8,nbu:"660613",loinc:"6768-6",s:"fal fosfatasa alcalina higado hueso hepatograma"},
+{c:"GGT-001",ar:"Química clínica",a:"Gamma glutamil transferasa",mom:"Basal",met:"IFCC · carboxi-nitroanilida",mu:"Suero",t:"suero",u:"U/L",vr:"< 40",ay:8,nbu:"660614",loinc:"2324-2",s:"ggt gamma gt colestasis higado hepatograma"},
+{c:"BIT-001",ar:"Química clínica",a:"Bilirrubina total",mom:"Basal",met:"Diazo · DPD",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 1,20",ay:8,nbu:"660621",loinc:"1975-2",s:"bilirrubina total ictericia hepatograma"},
+{c:"BID-001",ar:"Química clínica",a:"Bilirrubina directa",mom:"Basal",met:"Diazo · DPD",mu:"Suero",t:"suero",u:"mg/dL",vr:"< 0,30",ay:8,nbu:"660622",loinc:"1968-7",s:"bilirrubina directa conjugada hepatograma"},
+{c:"PRT-001",ar:"Química clínica",a:"Proteínas totales",mom:"Basal",met:"Biuret",mu:"Suero",t:"suero",u:"g/dL",vr:"6,4 – 8,3",ay:8,nbu:"660711",loinc:"2885-2",s:"proteinas totales proteinograma"},
+{c:"ALB-001",ar:"Química clínica",a:"Albúmina",mom:"Basal",met:"Verde de bromocresol",mu:"Suero",t:"suero",u:"g/dL",vr:"3,5 – 5,2",ay:8,nbu:"660712",loinc:"1751-7",s:"albumina proteinas nutricional"},
+{c:"PRE-001",ar:"Química clínica",a:"Proteinograma electroforético",mom:"Basal",met:"Electroforesis capilar",mu:"Suero",t:"suero",u:"% y g/dL",vr:"Informe por fracciones",ay:8,nbu:"660713",loinc:"1789-7",s:"proteinograma electroforesis fracciones gammapatia"},
+{c:"AMI-001",ar:"Química clínica",a:"Amilasa",mom:"Basal",met:"Colorimétrico · CNPG3",mu:"Suero",t:"suero",u:"U/L",vr:"28 – 100",ay:8,nbu:"660811",loinc:"1798-8",s:"amilasa pancreas pancreatitis"},
+{c:"LIP-001",ar:"Química clínica",a:"Lipasa",mom:"Basal",met:"Colorimétrico enzimático",mu:"Suero",t:"suero",u:"U/L",vr:"13 – 60",ay:8,nbu:"660812",loinc:"3040-3",s:"lipasa pancreas pancreatitis"},
+{c:"CPK-001",ar:"Química clínica",a:"CPK total",mom:"Basal",met:"IFCC · NAC activada",mu:"Suero",t:"suero",u:"U/L",vr:"< 170",ay:8,nbu:"660911",loinc:"2157-6",s:"cpk ck creatin quinasa muscular estatinas"},
+{c:"LDH-001",ar:"Química clínica",a:"Lactato deshidrogenasa",mom:"Basal",met:"IFCC · lactato a piruvato",mu:"Suero",t:"suero",u:"U/L",vr:"135 – 214",ay:8,nbu:"660912",loinc:"14804-9",s:"ldh lactato deshidrogenasa hemolisis"},
+
+/* ── Ionograma y minerales ───────────────────────────────────── */
+{c:"ION-001",ar:"Química clínica",a:"Sodio",mom:"Basal",met:"ISE indirecto",mu:"Suero",t:"suero",u:"mmol/L",vr:"136 – 145",ay:0,nbu:"661011",loinc:"2951-2",s:"sodio na ionograma electrolitos"},
+{c:"ION-002",ar:"Química clínica",a:"Potasio",mom:"Basal",met:"ISE indirecto",mu:"Suero",t:"suero",u:"mmol/L",vr:"3,5 – 5,1",ay:0,nbu:"661012",loinc:"2823-3",s:"potasio k ionograma electrolitos"},
+{c:"ION-003",ar:"Química clínica",a:"Cloro",mom:"Basal",met:"ISE indirecto",mu:"Suero",t:"suero",u:"mmol/L",vr:"98 – 107",ay:0,nbu:"661013",loinc:"2075-0",s:"cloro cl ionograma electrolitos"},
+{c:"CAL-001",ar:"Química clínica",a:"Calcio total",mom:"Basal",met:"Arsenazo III",mu:"Suero",t:"suero",u:"mg/dL",vr:"8,6 – 10,2",ay:8,nbu:"661021",loinc:"17861-6",s:"calcio calcemia hueso paratiroides"},
+{c:"CAL-011",ar:"Química clínica",a:"Calcio iónico",mom:"Basal · muestra anaerobia",met:"ISE directo",mu:"Sangre entera heparinizada",t:"heparina",u:"mmol/L",vr:"1,15 – 1,33",ay:8,nbu:"661022",loinc:"1994-3",s:"calcio ionico libre anaerobia"},
+{c:"FOS-001",ar:"Química clínica",a:"Fósforo",mom:"Basal",met:"Fosfomolibdato UV",mu:"Suero",t:"suero",u:"mg/dL",vr:"2,5 – 4,5",ay:8,nbu:"661031",loinc:"2777-1",s:"fosforo fosfatemia hueso"},
+{c:"MAG-001",ar:"Química clínica",a:"Magnesio",mom:"Basal",met:"Xilidil azul",mu:"Suero",t:"suero",u:"mg/dL",vr:"1,6 – 2,3",ay:8,nbu:"661041",loinc:"2601-3",s:"magnesio magnesemia"},
+
+/* ── Endocrinología ──────────────────────────────────────────── */
+{c:"TSH-001",ar:"Endocrinología",a:"TSH",mom:"Basal · 8 a 10 h",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µUI/mL",vr:"0,45 – 4,50",ay:0,nbu:"661111",loinc:"3016-3",s:"tsh tirotrofina tiroides tiroideo"},
+{c:"TSH-002",ar:"Endocrinología",a:"TSH",mom:"Basal · gestante 1er trimestre",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µUI/mL",vr:"0,10 – 2,50",ay:0,nbu:"661111",loinc:"3016-3",s:"tsh embarazo gestante tiroides trimestre"},
+{c:"T4L-001",ar:"Endocrinología",a:"T4 libre",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/dL",vr:"0,89 – 1,76",ay:0,nbu:"661112",loinc:"3024-7",s:"t4 libre tiroxina tiroides tiroideo"},
+{c:"T3L-001",ar:"Endocrinología",a:"T3 libre",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"pg/mL",vr:"2,30 – 4,20",ay:0,nbu:"661113",loinc:"3051-0",s:"t3 libre triyodotironina tiroides"},
+{c:"ATP-001",ar:"Endocrinología",a:"Anticuerpos anti-TPO",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"UI/mL",vr:"< 34",ay:0,nbu:"661115",loinc:"8099-0",s:"atpo anti tpo peroxidasa tiroiditis hashimoto autoinmune"},
+{c:"ATG-001",ar:"Endocrinología",a:"Anticuerpos anti-tiroglobulina",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"UI/mL",vr:"< 115",ay:0,nbu:"661116",loinc:"8098-2",s:"atg anti tiroglobulina tiroiditis autoinmune"},
+{c:"CRT-001",ar:"Endocrinología",a:"Cortisol",mom:"Basal · 08:00",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µg/dL",vr:"6,2 – 19,4",ay:0,nbu:"661131",loinc:"2143-6",s:"cortisol matinal suprarrenal 8 horas"},
+{c:"CRT-002",ar:"Endocrinología",a:"Cortisol",mom:"Vespertino · 16:00",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µg/dL",vr:"2,3 – 11,9",ay:0,nbu:"661131",loinc:"2143-6",s:"cortisol vespertino tarde ritmo circadiano"},
+{c:"CRT-003",ar:"Endocrinología",a:"Cortisol",mom:"60 min post ACTH",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"µg/dL",vr:"> 18 (respuesta)",ay:0,nbu:"661131",loinc:"2143-6",s:"cortisol acth estimulacion synacthen prueba"},
+{c:"PRL-001",ar:"Endocrinología",a:"Prolactina",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"4,8 – 23,3",ay:0,nbu:"661141",loinc:"2842-3",s:"prolactina prl hipofisis"},
+{c:"PRL-002",ar:"Endocrinología",a:"Prolactina",mom:"Post reposo 20 min · 2ª extracción",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"4,8 – 23,3",ay:0,nbu:"661141",loinc:"2842-3",s:"prolactina reposo segunda extraccion pool estres"},
+{c:"PTH-001",ar:"Endocrinología",a:"Paratohormona intacta",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"pg/mL",vr:"15 – 65",ay:0,nbu:"661151",loinc:"2731-8",s:"pth paratohormona paratiroides calcio"},
+{c:"VTD-001",ar:"Endocrinología",a:"Vitamina D 25-OH",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"30 – 100",ay:0,nbu:"661161",loinc:"1989-3",s:"vitamina d 25 oh colecalciferol deficit"},
+{c:"TES-001",ar:"Endocrinología",a:"Testosterona total",mom:"Basal · 07:00 a 10:00",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/dL",vr:"264 – 916 (varón)",ay:0,nbu:"661171",loinc:"2986-8",s:"testosterona total andrógenos hipogonadismo"},
+{c:"BHC-001",ar:"Endocrinología",a:"Subunidad beta HCG cuantitativa",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"mUI/mL",vr:"< 5 (no gestante)",ay:0,nbu:"661181",loinc:"19080-1",s:"bhcg beta hcg embarazo gonadotrofina test"},
+
+/* ── Hematología ─────────────────────────────────────────────── */
+{c:"HEM-001",ar:"Hematología",a:"Hemograma completo",mom:"Basal",met:"Citometría de flujo + impedancia",mu:"Sangre entera EDTA",t:"edta",u:"serie roja, blanca y plaquetas",vr:"Informe por parámetro",ay:0,nbu:"662011",loinc:"58410-2",s:"hemograma glóbulos blancos rojos leucocitos formula sanguineo completo"},
+{c:"PLQ-001",ar:"Hematología",a:"Recuento de plaquetas",mom:"Basal",met:"Impedancia con verificación óptica",mu:"Sangre entera EDTA",t:"edta",u:"×10³/µL",vr:"150 – 400",ay:0,nbu:"662021",loinc:"777-3",s:"plaquetas recuento trombocitos"},
+{c:"PLQ-002",ar:"Hematología",a:"Recuento de plaquetas en citrato",mom:"Control de pseudotrombocitopenia",met:"Impedancia · muestra citratada",mu:"Plasma citratado",t:"citrato",u:"×10³/µL",vr:"150 – 400",ay:0,nbu:"662021",loinc:"13056-7",s:"plaquetas citrato pseudotrombocitopenia agregados edta"},
+{c:"VSG-001",ar:"Hematología",a:"Eritrosedimentación",mom:"Primera hora",met:"Westergren",mu:"Sangre entera citratada",t:"citrato",u:"mm/h",vr:"< 20",ay:0,nbu:"662031",loinc:"4537-7",s:"vsg eritrosedimentacion sedimentacion westergren inflamacion"},
+{c:"RET-001",ar:"Hematología",a:"Recuento de reticulocitos",mom:"Basal",met:"Citometría de flujo",mu:"Sangre entera EDTA",t:"edta",u:"%",vr:"0,5 – 2,0",ay:0,nbu:"662041",loinc:"17849-1",s:"reticulocitos anemia regenerativa medula"},
+{c:"FRO-001",ar:"Hematología",a:"Frotis de sangre periférica",mom:"Basal",met:"Microscopía óptica · May-Grünwald Giemsa",mu:"Sangre entera EDTA",t:"edta",u:"descriptivo",vr:"Informe morfológico",ay:0,nbu:"662051",loinc:"11156-7",s:"frotis extendido morfologia periferica giemsa"},
+
+/* ── Coagulación ─────────────────────────────────────────────── */
+{c:"TPR-001",ar:"Coagulación",a:"Tiempo de protrombina y RIN",mom:"Basal",met:"Coagulométrico · tromboplastina ISI 1,0",mu:"Plasma citratado",t:"citrato",u:"seg / RIN",vr:"11 – 14 seg · RIN 0,9 – 1,2",ay:0,nbu:"662111",loinc:"5902-2",s:"tp protrombina rin quick anticoagulacion coagulograma"},
+{c:"KPT-001",ar:"Coagulación",a:"KPTT",mom:"Basal",met:"Coagulométrico · sílica-fosfolípidos",mu:"Plasma citratado",t:"citrato",u:"seg",vr:"25 – 37",ay:0,nbu:"662121",loinc:"14979-9",s:"kptt aptt tiempo parcial tromboplastina heparina coagulograma"},
+{c:"FIB-001",ar:"Coagulación",a:"Fibrinógeno",mom:"Basal",met:"Clauss",mu:"Plasma citratado",t:"citrato",u:"mg/dL",vr:"200 – 400",ay:0,nbu:"662131",loinc:"3255-7",s:"fibrinogeno clauss coagulograma"},
+{c:"DDI-001",ar:"Coagulación",a:"Dímero D",mom:"Basal",met:"Inmunoturbidimetría de alta sensibilidad",mu:"Plasma citratado",t:"citrato",u:"ng/mL FEU",vr:"< 500",ay:0,nbu:"662141",loinc:"48065-7",s:"dimero d trombosis tep tromboembolismo"},
+
+/* ── Metabolismo del hierro y vitaminas ──────────────────────── */
+{c:"FER-001",ar:"Hematología",a:"Ferritina",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"13 – 150 (mujer)",ay:0,nbu:"662211",loinc:"2276-4",s:"ferritina deposito hierro anemia"},
+{c:"FRR-001",ar:"Química clínica",a:"Ferremia",mom:"Basal · 08:00",met:"Ferrozina sin desproteinización",mu:"Suero",t:"suero",u:"µg/dL",vr:"50 – 170",ay:8,nbu:"662221",loinc:"2498-4",s:"ferremia hierro serico sideremia"},
+{c:"TIB-001",ar:"Química clínica",a:"Capacidad total de fijación de hierro",mom:"Basal",met:"Calculado sobre transferrina",mu:"Suero",t:"suero",u:"µg/dL",vr:"250 – 450",ay:8,nbu:"662222",loinc:"2500-7",s:"tibc transferrina saturacion capacidad hierro"},
+{c:"B12-001",ar:"Hematología",a:"Vitamina B12",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"pg/mL",vr:"197 – 771",ay:0,nbu:"662231",loinc:"2132-9",s:"b12 cobalamina anemia megaloblastica"},
+{c:"FOL-001",ar:"Hematología",a:"Ácido fólico",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"3,9 – 26,8",ay:0,nbu:"662232",loinc:"2284-8",s:"folico folato anemia megaloblastica embarazo"},
+
+/* ── Orina ───────────────────────────────────────────────────── */
+{c:"ORC-001",ar:"Orina",a:"Orina completa",mom:"Primera micción de la mañana",met:"Tira reactiva 10 parámetros + sedimento",mu:"Orina · chorro medio",t:"orina",u:"físico-químico y sedimento",vr:"Informe por parámetro",ay:0,nbu:"663011",loinc:"24357-6",s:"orina completa sedimento urinario tira pis analisis"},
+{c:"UCU-001",ar:"Orina",a:"Urocultivo",mom:"Primera micción · previo a antibiótico",met:"Cultivo cuantitativo + antibiograma",mu:"Orina · chorro medio estéril",t:"orina",u:"UFC/mL",vr:"< 10 000 UFC/mL",ay:0,nbu:"663021",loinc:"630-4",s:"urocultivo cultivo orina infeccion urinaria antibiograma itu"},
+{c:"PRO-024",ar:"Orina",a:"Proteinuria de 24 horas",mom:"Recolección de 24 h",met:"Rojo de pirogalol",mu:"Orina de 24 h",t:"orina24",u:"mg/24 h",vr:"< 150",ay:0,nbu:"663031",loinc:"2889-4",s:"proteinuria proteinas orina 24 horas nefropatia"},
+{c:"MAL-001",ar:"Orina",a:"Microalbuminuria",mom:"Primera micción de la mañana",met:"Inmunoturbidimetría · relación albúmina/creatinina",mu:"Orina · chorro medio",t:"orina",u:"mg/g creat",vr:"< 30",ay:0,nbu:"663041",loinc:"14959-1",s:"microalbuminuria albumina creatinina nefropatia diabetica"},
+
+/* ── Inmunoserología ─────────────────────────────────────────── */
+{c:"PCR-001",ar:"Inmunoserología",a:"Proteína C reactiva",mom:"Basal",met:"Inmunoturbidimetría",mu:"Suero",t:"suero",u:"mg/L",vr:"< 5",ay:0,nbu:"664011",loinc:"1988-5",s:"pcr proteina c reactiva inflamacion infeccion"},
+{c:"PCU-001",ar:"Inmunoserología",a:"PCR ultrasensible",mom:"Basal · sin proceso agudo",met:"Inmunoturbidimetría amplificada con látex",mu:"Suero",t:"suero",u:"mg/L",vr:"< 1,0 riesgo bajo",ay:0,nbu:"664012",loinc:"30522-7",s:"pcr ultrasensible hs cardiovascular riesgo"},
+{c:"AST-001",ar:"Inmunoserología",a:"ASTO",mom:"Basal",met:"Inmunoturbidimetría",mu:"Suero",t:"suero",u:"UI/mL",vr:"< 200",ay:0,nbu:"664021",loinc:"5387-6",s:"asto antiestreptolisina estreptococo faringitis"},
+{c:"FAR-001",ar:"Inmunoserología",a:"Factor reumatoideo",mom:"Basal",met:"Inmunoturbidimetría",mu:"Suero",t:"suero",u:"UI/mL",vr:"< 14",ay:0,nbu:"664031",loinc:"11572-5",s:"factor reumatoideo artritis reumatoidea latex"},
+{c:"HIV-001",ar:"Inmunoserología",a:"HIV · antígeno p24 y anticuerpos",mom:"Basal · con consentimiento",met:"Electroquimioluminiscencia 4ª generación",mu:"Suero",t:"suero",u:"índice",vr:"No reactivo",ay:0,nbu:"664111",loinc:"56888-1",s:"hiv vih sida serologia cuarta generacion"},
+{c:"HBS-001",ar:"Inmunoserología",a:"Antígeno de superficie de hepatitis B",mom:"Basal",met:"Electroquimioluminiscencia",mu:"Suero",t:"suero",u:"índice",vr:"No reactivo",ay:0,nbu:"664121",loinc:"5196-1",s:"hbsag hepatitis b antigeno superficie serologia"},
+{c:"HCV-001",ar:"Inmunoserología",a:"Anticuerpos anti-hepatitis C",mom:"Basal",met:"ELISA de 3ª generación",mu:"Suero",t:"suero",u:"índice",vr:"No reactivo",ay:0,nbu:"664131",loinc:"16128-1",s:"hcv hepatitis c anticuerpos serologia elisa"},
+{c:"VDR-001",ar:"Inmunoserología",a:"VDRL cuantitativa",mom:"Basal",met:"Aglutinación en placa con titulación",mu:"Suero",t:"suero",u:"dils",vr:"No reactiva",ay:0,nbu:"664141",loinc:"5292-8",s:"vdrl sifilis treponema serologia prenupcial"},
+{c:"TXG-001",ar:"Inmunoserología",a:"Toxoplasmosis IgG",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"UI/mL",vr:"< 7,2 no reactivo",ay:0,nbu:"664151",loinc:"22577-1",s:"toxoplasmosis igg embarazo toxo serologia"},
+{c:"TXM-001",ar:"Inmunoserología",a:"Toxoplasmosis IgM",mom:"Basal",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"índice",vr:"No reactivo",ay:0,nbu:"664152",loinc:"22579-7",s:"toxoplasmosis igm embarazo toxo aguda serologia"},
+{c:"CHA-001",ar:"Inmunoserología",a:"Chagas · dos técnicas",mom:"Basal",met:"ELISA + hemaglutinación indirecta",mu:"Suero",t:"suero",u:"índice y título",vr:"No reactivo por ambas",ay:0,nbu:"664161",loinc:"18396-2",s:"chagas trypanosoma cruzi elisa hai serologia"},
+{c:"PSA-001",ar:"Inmunoserología",a:"PSA total",mom:"Basal · sin tacto previo 48 h",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL",vr:"< 4,0",ay:0,nbu:"664211",loinc:"2857-1",s:"psa antigeno prostatico prostata total"},
+{c:"PSA-002",ar:"Inmunoserología",a:"PSA libre y relación libre/total",mom:"Basal · misma extracción que PSA total",met:"Quimioluminiscencia",mu:"Suero",t:"suero",u:"ng/mL y %",vr:"Relación > 25 %",ay:0,nbu:"664212",loinc:"10886-0",s:"psa libre relacion porcentaje prostata"}
+];
+
+/* Perfiles: agrupaciones frecuentes. Un clic del médico = varios
+   registros exactos, con sus momentos de toma ya definidos.      */
+const PERFILES = [
+  {n:"PTOG 75 g · curva completa", cs:["GLU-001","GLU-002","GLU-003","GLU-004"]},
+  {n:"Curva glucemia + insulinemia", cs:["GLU-001","INS-001","GLU-004","INS-004","HOM-001"]},
+  {n:"Perfil lipídico", cs:["COL-001","HDL-001","TRI-001","LDL-001","NHD-001"]},
+  {n:"Hepatograma", cs:["TGO-001","TGP-001","FAL-001","GGT-001","BIT-001","BID-001","PRT-001","ALB-001"]},
+  {n:"Control metabólico anual", cs:["GLU-001","HBA-001","COL-001","HDL-001","TRI-001","LDL-001","URE-001","CRE-001","FGE-001","URI-001","TSH-001","HEM-001","ORC-001"]},
+  {n:"Perfil tiroideo", cs:["TSH-001","T4L-001","T3L-001","ATP-001"]},
+  {n:"Prequirúrgico", cs:["HEM-001","TPR-001","KPT-001","GLU-001","URE-001","CRE-001","ION-001","ION-002","ORC-001"]},
+  {n:"Embarazo · 1er trimestre", cs:["HEM-001","GLU-001","TSH-002","ORC-001","UCU-001","VDR-001","HIV-001","HBS-001","TXG-001","TXM-001","CHA-001","FOL-001"]},
+  {n:"Anemia · estudio inicial", cs:["HEM-001","RET-001","FRO-001","FER-001","FRR-001","TIB-001","B12-001","FOL-001"]}
+];
+
+/* ══════════════════════════════════════════════════════════════
+   MÓDULO 2 · Red de laboratorios y excedentes publicados
+   Los vencimientos se calculan como desplazamiento en días desde
+   hoy, para que la demo no quede desactualizada.
+   ══════════════════════════════════════════════════════════════ */
+
+const MI_LAB = "Lab. Bioanálisis Cuyo";
+const LABS = ["Lab. Bioanálisis Cuyo","Lab. San Martín","Lab. Central del Este","Lab. Andes","Lab. Cordillera","Lab. del Valle","Lab. Guaymallén","Lab. San Rafael"];
+
+const REACTIVOS_SEED = [
+  {id:"R1", r:"Orina completa · tiras reactivas 10 parámetros", pres:"Envase x 100 tiras", lote:"ORC-2508-K", dias:19,  det:20,  precio:1240, ref:2050, lab:"Lab. San Martín",      loc:"Guaymallén",   cons:"15 – 30 °C", env:"Envase abierto", frac:10, mine:false},
+  {id:"R2", r:"HbA1c · cartucho HPLC",                          pres:"Cartucho x 400 det.",  lote:"A1C-2601-C", dias:34,  det:120, precio:4900, ref:7400, lab:"Lab. Central del Este",loc:"Junín",        cons:"2 – 8 °C",   env:"Envase cerrado", frac:20, mine:false},
+  {id:"R3", r:"TSH · quimioluminiscencia",                      pres:"Kit x 100 det.",       lote:"TSH-2511-A", dias:11,  det:40,  precio:3700, ref:6900, lab:"Lab. Cordillera",      loc:"Luján de Cuyo",cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
+  {id:"R4", r:"Dímero D · inmunoturbidimetría",                 pres:"Kit x 60 det.",        lote:"DDI-2503-F", dias:26,  det:35,  precio:8400, ref:12900,lab:"Lab. del Valle",       loc:"Maipú",        cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
+  {id:"R5", r:"Perfil lipídico enzimático · Col/HDL/TG",        pres:"Set x 400 det.",       lote:"LIP-2602-D", dias:58,  det:300, precio:980,  ref:1750, lab:"Lab. San Rafael",      loc:"San Rafael",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:50, mine:false},
+  {id:"R6", r:"Vitamina D 25-OH · quimioluminiscencia",         pres:"Kit x 100 det.",       lote:"VTD-2604-B", dias:63,  det:55,  precio:9800, ref:14200,lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
+  {id:"R7", r:"Subunidad beta HCG · quimioluminiscencia",       pres:"Kit x 100 det.",       lote:"BHC-2509-E", dias:16,  det:25,  precio:4300, ref:7100, lab:"Lab. Guaymallén",      loc:"Guaymallén",   cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
+  {id:"R8", r:"Ferritina · quimioluminiscencia",                pres:"Kit x 50 det.",        lote:"FER-2512-H", dias:47,  det:22,  precio:5200, ref:8300, lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:5,  mine:false},
+  {id:"M1", r:"Insulinemia · quimioluminiscencia",              pres:"Kit x 100 det.",       lote:"INS-2507-G", dias:29,  det:45,  precio:6100, ref:9600, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase abierto", frac:10, mine:true},
+  {id:"M2", r:"Anti-HCV · ELISA",                               pres:"Placa x 96 det.",      lote:"HCV-2605-J", dias:41,  det:60,  precio:3900, ref:6200, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:24, mine:true}
+];
+
+const MOV_SEED = [
+  {dias:-12, tipo:"Consumo", r:"Orina completa · tiras reactivas 10 parámetros", lote:"ORC-2411-B", det:30, imp:-37200, cp:"Lab. del Valle", est:"Liquidado"},
+  {dias:-7,  tipo:"Venta",   r:"Insulinemia · quimioluminiscencia",              lote:"INS-2507-G", det:15, imp:91500,  cp:"Lab. Andes",      est:"Liquidado"},
+  {dias:-3,  tipo:"Consumo", r:"Vitamina D 25-OH · quimioluminiscencia",         lote:"VTD-2510-A", det:10, imp:-98000, cp:"Lab. Andes",      est:"En proceso"}
+];
+
+/* ══════════════════════════════════════════════════════════════
+   APLICACIÓN
+   ══════════════════════════════════════════════════════════════ */
+
+const $  = (s,r) => (r||document).querySelector(s);
+const $$ = (s,r) => [...(r||document).querySelectorAll(s)];
+const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const esc = s => (s||"").toString().replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const hoy = new Date();
+const addDays = n => { const d = new Date(hoy); d.setDate(d.getDate()+n); return d; };
+const fDate = d => d.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
+const fMoney = n => "$ " + Math.round(Math.abs(n)).toLocaleString("es-AR");
+const fNum = n => Math.round(n).toLocaleString("es-AR");
+
+CATALOGO.forEach(r => {
+  r._h = norm([r.a,r.mom,r.met,r.mu,r.s,r.c,r.u,r.ar].join(" "));
+  r._a = norm(r.a);
+});
+const byCode = Object.fromEntries(CATALOGO.map(r => [r.c, r]));
+
+let S;
+function initState(){
+  S = {
+    vista:"m1",
+    area:"Todas",
+    q:"",
+    favoritos:new Set(["GLU-001","HBA-001","TSH-001","HEM-001","ORC-001","COL-001"]),
+    orden:["GLU-001","HBA-001","ORC-001"],
+    emitida:{ id:"ORD-2026-0918", seed:true, cs:["GLU-004","HBA-001","ORC-001"], ts:addDays(-1) },
+    tab:"red",
+    reactivos:REACTIVOS_SEED.map(o => Object.assign({},o)),
+    movimientos:MOV_SEED.map(m => Object.assign({},m,{f:addDays(m.dias)})),
+    reserva:{ seed:true, r:"Orina completa · tiras reactivas 10 parámetros", lote:"ORC-2411-B", det:30, precio:1240, lab:"Lab. del Valle", loc:"Guaymallén", dias:23, cons:"15 – 30 °C" },
+    resTarget:null
+  };
+}
+
+/* ── Navegación ─────────────────────────────────────────────── */
+function irA(v){
+  S.vista = v;
+  $$(".nav button").forEach(b => b.setAttribute("aria-current", String(b.dataset.view === v)));
+  $$(".view").forEach(s => s.classList.toggle("on", s.id === "view-" + v));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+$$(".nav button").forEach(b => b.addEventListener("click", () => irA(b.dataset.view)));
+
+/* ══════════════ MÓDULO 1 ══════════════ */
+
+function buscar(){
+  const q = norm(S.q).trim();
+  const terms = q ? q.split(/\s+/) : [];
+  let out = CATALOGO.filter(r => {
+    if (S.area === "★" ) { if (!S.favoritos.has(r.c)) return false; }
+    else if (S.area !== "Todas" && r.ar !== S.area) return false;
+    return terms.every(t => r._h.includes(t));
+  });
+  if (terms.length){
+    const sc = r => {
+      let n = 0;
+      terms.forEach(t => {
+        if (norm(r.c).startsWith(t)) n += 120;
+        if (r._a.startsWith(t)) n += 60;
+        else if (r._a.includes(t)) n += 30;
+        if (norm(r.s).split(" ").some(w => w === t)) n += 25;
+      });
+      return n;
+    };
+    out.sort((a,b) => sc(b) - sc(a) || a.c.localeCompare(b.c));
+  } else {
+    out.sort((a,b) => a._a.localeCompare(b._a) || a.c.localeCompare(b.c));
+  }
+  return out;
+}
+
+function renderResultados(){
+  const rs = buscar();
+  $("#resTitle").textContent = S.q ? "Resultados para “" + S.q + "”" : (S.area === "★" ? "Favoritos" : S.area === "Todas" ? "Todo el catálogo" : S.area);
+  $("#resNote").textContent = rs.length + (rs.length === 1 ? " registro" : " registros");
+  const box = $("#results");
+  if (!rs.length){
+    box.innerHTML = '<div class="empty">Sin coincidencias. Probá con un sinónimo, el código o el método.<br>Ejemplos: <b>azúcar</b>, <b>curva</b>, <b>transaminasas</b>, <b>GLU-004</b>, <b>hexoquinasa</b>.</div>';
+    return;
+  }
+  box.innerHTML = rs.map(r => {
+    const en = S.orden.includes(r.c);
+    const fav = S.favoritos.has(r.c);
+    return '<div class="res' + (en ? " added" : "") + '">' +
+      '<div class="code">' + r.c + '</div>' +
+      '<div><div class="nm">' + esc(r.a) + '</div>' +
+        '<div class="dims"><span>' + esc(r.mom) + '</span><span>' + esc(r.met) + '</span><span>' + esc(r.mu) + '</span></div>' +
+        '<div class="meta"><span>' + esc(r.u) + ' · VR ' + esc(r.vr) + '</span>' +
+          '<span class="std">NBU ' + r.nbu + '</span><span class="std">LOINC ' + r.loinc + '</span></div>' +
+      '</div>' +
+      '<div style="display:flex;gap:4px;align-items:center">' +
+        '<button class="starbtn" data-fav="' + (fav?1:0) + '" data-star="' + r.c + '" title="Marcar como favorito" aria-label="Favorito">' + (fav ? "★" : "☆") + '</button>' +
+        '<button class="addbtn" data-in="' + (en?1:0) + '" data-add="' + r.c + '" title="' + (en ? "Quitar de la orden" : "Agregar a la orden") + '" aria-label="Agregar">' + (en ? "✓" : "+") + '</button>' +
+      '</div></div>';
+  }).join("");
+}
+
+function preanalitica(cs){
+  const rs = cs.map(c => byCode[c]).filter(Boolean);
+  const ay = Math.max(0, ...rs.map(r => r.ay || 0));
+  const tubos = [...new Set(rs.map(r => r.t))].filter(t => t !== "calc");
+  const notas = [];
+  if (rs.some(r => /post carga/.test(r.mom))) notas.push("Extracciones seriadas: basal y a los 30, 60 y 120 min tras la carga de 75 g.");
+  if (rs.some(r => r.t === "orina24")) notas.push("Recolección de orina de 24 h, con horario de inicio y fin registrado.");
+  if (rs.some(r => r.c === "UCU-001")) notas.push("Urocultivo: chorro medio, previo al inicio de antibióticos.");
+  if (rs.some(r => r.c === "CAL-011")) notas.push("Calcio iónico: muestra anaerobia, procesar dentro de los 30 min.");
+  if (rs.some(r => r.c === "PSA-001" || r.c === "PSA-002")) notas.push("PSA: sin tacto rectal ni eyaculación en las 48 h previas.");
+  if (rs.some(r => r.c === "PRL-002")) notas.push("Prolactina post reposo: segunda extracción a los 20 min, en decúbito.");
+  return {ay, tubos, notas, rs};
+}
+
+function renderOrden(){
+  const cs = S.orden;
+  $("#ordCount").textContent = cs.length + (cs.length === 1 ? " estudio" : " estudios");
+  $("#ordPct").textContent = cs.length ? "100 %" : "—";
+  $("#btnEmit").disabled = !cs.length;
+  $("#btnClear").disabled = !cs.length;
+  const box = $("#ordItems");
+  if (!cs.length){
+    box.innerHTML = '<div class="empty">Elegí estudios del catálogo para armar la orden.</div>';
+    $("#ordPre").hidden = true;
+    return;
+  }
+  box.innerHTML = cs.map(c => {
+    const r = byCode[c];
+    return '<div class="oitem"><span class="c">' + r.c + '</span>' +
+      '<span class="t"><b>' + esc(r.a) + '</b><span>' + esc(r.mom) + ' · ' + esc(r.mu) + '</span></span>' +
+      '<button class="x" data-del="' + r.c + '" aria-label="Quitar">✕</button></div>';
+  }).join("");
+
+  const p = preanalitica(cs);
+  const pre = $("#ordPre");
+  pre.hidden = false;
+  pre.innerHTML =
+    '<div class="ln"><b>Ayuno</b><span>' + (p.ay ? p.ay + " horas" : "No requiere") + '</span></div>' +
+    '<div class="ln"><b>Muestras</b><span>' + p.tubos.map(t => TUBOS[t].n.split(" · ")[0]).join(" · ") + ' (' + p.tubos.length + ')</span></div>' +
+    (p.notas.length ? '<div class="ln"><b>Nota</b><span>' + esc(p.notas[0]) + '</span></div>' : "");
+}
+
+function toggleItem(c){
+  const i = S.orden.indexOf(c);
+  if (i >= 0) S.orden.splice(i,1); else S.orden.push(c);
+  renderResultados(); renderOrden();
+}
+
+$("#results").addEventListener("click", e => {
+  const a = e.target.closest("[data-add]");
+  if (a) return toggleItem(a.dataset.add);
+  const s = e.target.closest("[data-star]");
+  if (s){
+    const c = s.dataset.star;
+    S.favoritos.has(c) ? S.favoritos.delete(c) : S.favoritos.add(c);
+    renderResultados();
+  }
+});
+$("#ordItems").addEventListener("click", e => {
+  const d = e.target.closest("[data-del]");
+  if (d) toggleItem(d.dataset.del);
+});
+$("#btnClear").addEventListener("click", () => { S.orden = []; renderResultados(); renderOrden(); });
+$("#q").addEventListener("input", e => { S.q = e.target.value; renderResultados(); });
+
+function renderChips(){
+  $("#areaChips").innerHTML = ["Todas", ...AREAS].map(a =>
+    '<button class="chip" data-area="' + esc(a) + '" aria-pressed="' + (S.area===a) + '">' + esc(a) + '</button>').join("") +
+    '<button class="chip" data-area="★" aria-pressed="' + (S.area==="★") + '">★ Favoritos</button>';
+  $("#perfChips").innerHTML = PERFILES.map((p,i) =>
+    '<button class="chip" data-perf="' + i + '" title="Agrega ' + p.cs.length + ' registros">' + esc(p.n) + ' <b style="color:var(--orange);font-weight:600">+' + p.cs.length + '</b></button>').join("");
+}
+$("#areaChips").addEventListener("click", e => {
+  const b = e.target.closest("[data-area]");
+  if (!b) return;
+  S.area = b.dataset.area; renderChips(); renderResultados();
+});
+$("#perfChips").addEventListener("click", e => {
+  const b = e.target.closest("[data-perf]");
+  if (!b) return;
+  const p = PERFILES[+b.dataset.perf];
+  let add = 0;
+  p.cs.forEach(c => { if (byCode[c] && !S.orden.includes(c)) { S.orden.push(c); add++; } });
+  renderResultados(); renderOrden();
+  toast("Perfil “" + p.n + "”: " + add + " registros agregados a la orden");
+});
+
+/* ── Emitir la orden ────────────────────────────────────────── */
+$("#btnEmit").addEventListener("click", () => {
+  const cs = S.orden.slice();
+  const id = "ORD-" + hoy.getFullYear() + "-" + String(1000 + Math.floor(Math.random()*8999)).slice(0,4);
+  S.emitida = { id, cs, ts:new Date(), seed:false };
+  mostrarOrden();
+  renderTraza();
+});
+
+function mostrarOrden(){
+  const o = S.emitida, cs = o.cs;
+  const p = preanalitica(cs);
+  $("#ordenSub").textContent = o.id + " · " + fDate(o.ts) + " · M. A. Fernández · OSEP · Dra. L. Ibarra MP 8421";
+
+  const nombres = [...new Set(cs.map(c => byCode[c].a))];
+  $("#antesTxt").innerHTML =
+    nombres.map(n => "· " + esc(n.toLowerCase())).join("<br>") +
+    '<div style="margin-top:14px;font-family:var(--sans);font-size:12px;color:var(--muted)">No viaja con la indicación:</div>' +
+    '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:8px;font-family:var(--sans);font-size:12px">' +
+      '<span class="bad">momento de la toma</span><span class="bad">método</span>' +
+      '<span class="bad">tipo de muestra</span><span class="bad">unidad y valores de referencia</span></div>';
+
+  const orden = ["suero","edta","citrato","fluoruro","heparina","orina","orina24","calc"];
+  $("#tubos").innerHTML = orden.filter(t => cs.some(c => byCode[c].t === t)).map(t => {
+    const items = cs.filter(c => byCode[c].t === t);
+    return '<div class="tube"><div class="th"><span class="swatch" style="background:' + TUBOS[t].col + '"></span>' +
+      esc(TUBOS[t].n) + ' <span style="color:var(--muted);font-weight:400">· ' + items.length + '</span></div><ul>' +
+      items.map(c => { const r = byCode[c];
+        return '<li><span class="c">' + r.c + '</span><span>' + esc(r.a) + ' <span style="color:var(--muted)">— ' + esc(r.mom) + '</span></span></li>';
+      }).join("") + '</ul></div>';
+  }).join("");
+
+  $("#ordenStats").innerHTML =
+    '<span class="pill soft">' + cs.length + ' estudios</span>' +
+    '<span class="pill soft">' + p.tubos.length + ' tubos a extraer</span>' +
+    '<span class="pill ok">100 % codificado</span>' +
+    '<span class="pill ok">0 ítems en texto libre</span>' +
+    '<span class="pill">' + (p.ay ? "Ayuno " + p.ay + " h" : "Sin ayuno") + '</span>';
+
+  $("#ordenPre").innerHTML = '<b style="color:var(--heading)">Indicaciones al paciente que genera la propia orden:</b><br>' +
+    (p.ay ? "Ayuno de " + p.ay + " horas. " : "No requiere ayuno. ") +
+    (p.notas.length ? p.notas.map(esc).join(" ") : "Sin preparación especial.");
+
+  abrir("#ovOrden");
+}
+$("#btnVerTraza").addEventListener("click", () => { cerrar(); irA("tz"); });
+
+/* ══════════════ MÓDULO 2 ══════════════ */
+
+const sev = d => d <= 15 ? "c" : d <= 30 ? "w" : "";
+const sevPill = d => d <= 15 ? "crit" : d <= 30 ? "warn" : "ok";
+
+function renderKpis(){
+  const rs = S.reactivos;
+  const totDet = rs.reduce((a,o) => a + o.det, 0);
+  const pronto = rs.filter(o => o.dias < 30);
+  const detPronto = pronto.reduce((a,o) => a + o.det, 0);
+  const valor = pronto.reduce((a,o) => a + o.det * o.ref, 0);
+  const recup = S.movimientos.filter(m => m.imp > 0).reduce((a,m) => a + m.imp, 0);
+  $("#kpis").innerHTML = [
+    ['Ofrecido en la red', fNum(totDet), 'determinaciones publicadas por ' + LABS.length + ' laboratorios', ''],
+    ['Vencen en menos de 30 días', fNum(detPronto), 'determinaciones que hoy se perderían', 'alert'],
+    ['Valor en riesgo', fMoney(valor), 'a costo de reposición del kit', 'accent'],
+    ['Recuperado por mi laboratorio', fMoney(recup), 'excedentes vendidos a la red', '']
+  ].map(k => '<div class="kpi ' + k[3] + '"><div class="k">' + k[0] + '</div><div class="v">' + k[1] + '</div><div class="d">' + k[2] + '</div></div>').join("");
+}
+
+function offerHTML(o){
+  const d = o.dias, vto = addDays(d);
+  const agot = o.det <= 0;
+  return '<article class="offer ' + sev(d) + (o.mine ? " mine" : "") + '">' +
+    '<div class="top"><div><h4>' + esc(o.r) + '</h4><div class="pres">' + esc(o.pres) + ' · lote <span class="mono">' + esc(o.lote) + '</span></div></div>' +
+      '<span class="pill ' + sevPill(d) + '">' + (d <= 15 ? "⚠ " : "") + d + ' días</span></div>' +
+    '<div class="nums">' +
+      '<div class="n"><span class="nv">' + fNum(o.det) + '</span><span class="nk">determinaciones</span></div>' +
+      '<div class="n price"><span class="nv">' + fMoney(o.precio) + '</span><span class="nk">por determinación</span></div>' +
+      '<div class="n price"><span class="nv" style="color:var(--muted);text-decoration:line-through">' + fMoney(o.ref) + '</span><span class="nk">reposición del kit</span></div>' +
+    '</div>' +
+    '<div class="chips" style="gap:6px">' +
+      '<span class="pill">' + esc(o.cons) + '</span><span class="pill">' + esc(o.env) + '</span>' +
+      '<span class="pill">fracción mín. ' + o.frac + '</span><span class="pill">vence ' + fDate(vto) + '</span></div>' +
+    '<div class="bot"><div class="who"><b>' + esc(o.lab) + '</b>' + esc(o.loc) + '</div>' +
+      (o.mine
+        ? '<span class="pill soft">Publicado por mí</span>'
+        : '<button class="btn sm" data-res="' + o.id + '"' + (agot ? " disabled" : "") + '>' + (agot ? "Agotado" : "Reservar") + '</button>') +
+    '</div></article>';
+}
+
+function renderOfertas(){
+  const red = S.reactivos.filter(o => !o.mine), mias = S.reactivos.filter(o => o.mine);
+  const ord = (a,b) => a.dias - b.dias;
+  $("#offersRed").innerHTML = red.sort(ord).map(offerHTML).join("");
+  $("#offersMias").innerHTML = mias.sort(ord).map(offerHTML).join("") ||
+    '<div class="empty panel" style="grid-column:1/-1">Todavía no publicaste excedentes.</div>';
+}
+
+function renderMovimientos(){
+  const ms = S.movimientos.slice().sort((a,b) => b.f - a.f);
+  $("#movBody").innerHTML = ms.map(m =>
+    '<tr' + (m.nuevo ? ' class="new"' : '') + '><td class="mono">' + fDate(m.f) + '</td>' +
+    '<td>' + esc(m.tipo) + '</td><td>' + esc(m.r) + '</td><td class="mono">' + esc(m.lote) + '</td>' +
+    '<td class="mono tnum">' + fNum(m.det) + '</td>' +
+    '<td class="mono tnum" style="color:' + (m.imp > 0 ? "var(--ok)" : "var(--ink-2)") + '">' + (m.imp > 0 ? "+ " : "− ") + fMoney(m.imp).slice(2) + '</td>' +
+    '<td>' + esc(m.cp) + '</td>' +
+    '<td><span class="pill ' + (m.est === "Liquidado" ? "ok" : "") + '">' + esc(m.est) + '</span></td></tr>').join("");
+}
+
+$$('.tabs button').forEach(b => b.addEventListener("click", () => {
+  S.tab = b.dataset.tab;
+  $$('.tabs button').forEach(x => x.setAttribute("aria-selected", String(x === b)));
+  ["red","mias","mov"].forEach(t => { $("#tab-" + t).hidden = (t !== S.tab); });
+}));
+
+/* ── Reservar ───────────────────────────────────────────────── */
+$("#tab-red").addEventListener("click", e => {
+  const b = e.target.closest("[data-res]");
+  if (b) abrirReserva(b.dataset.res);
+});
+
+function abrirReserva(id){
+  const o = S.reactivos.find(x => x.id === id);
+  S.resTarget = o;
+  $("#resSub").textContent = o.r + " · lote " + o.lote;
+  $("#resInfo").innerHTML = [
+    ["Publica", o.lab + " · " + o.loc],
+    ["Vence", fDate(addDays(o.dias)) + " (en " + o.dias + " días)"],
+    ["Conservación", o.cons + " · " + o.env],
+    ["Disponible", fNum(o.det) + " determinaciones"]
+  ].map(r => '<div style="display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line-soft);padding-bottom:7px"><span style="color:var(--muted)">' + r[0] + '</span><span style="font-weight:600;text-align:right">' + esc(r[1]) + '</span></div>').join("");
+  $("#resRule").textContent = "Fracción mínima de " + o.frac + " determinaciones. Máximo disponible: " + o.det + ".";
+  $("#resQty").value = Math.min(o.det, o.frac);
+  calcRes();
+  abrir("#ovRes");
+}
+
+function qtyValida(){
+  const o = S.resTarget;
+  let q = parseInt(String($("#resQty").value).replace(/\D/g,""), 10);
+  if (!q || q < o.frac) q = o.frac;
+  if (q > o.det) q = o.det;
+  q = Math.max(o.frac, Math.round(q / o.frac) * o.frac);
+  if (q > o.det) q = Math.floor(o.det / o.frac) * o.frac || o.det;
+  return q;
+}
+function calcRes(){
+  const o = S.resTarget, q = qtyValida();
+  $("#resQty").value = q;
+  $("#resTotal").textContent = fMoney(q * o.precio);
+  $("#resAhorro").textContent = fMoney(q * (o.ref - o.precio));
+}
+$("#resPlus").addEventListener("click", () => { $("#resQty").value = qtyValida() + S.resTarget.frac; calcRes(); });
+$("#resMinus").addEventListener("click", () => { $("#resQty").value = qtyValida() - S.resTarget.frac; calcRes(); });
+$("#resQty").addEventListener("change", calcRes);
+
+$("#btnResOk").addEventListener("click", () => {
+  const o = S.resTarget, q = qtyValida();
+  o.det -= q;
+  S.movimientos.push({ f:new Date(), tipo:"Compra", r:o.r, lote:o.lote, det:q, imp:-(q*o.precio), cp:o.lab, est:"Pagado · reservado", nuevo:true });
+  S.reserva = { seed:false, r:o.r, lote:o.lote, det:q, precio:o.precio, lab:o.lab, loc:o.loc, dias:o.dias, cons:o.cons };
+  cerrar();
+  renderM2(); renderTraza();
+  toast(fNum(q) + " determinaciones reservadas y pagadas · lote " + o.lote);
+});
+
+/* ── Publicar ───────────────────────────────────────────────── */
+$("#btnPub").addEventListener("click", () => abrir("#ovPub"));
+$("#btnPubOk").addEventListener("click", () => {
+  const det = parseInt(String($("#pubDet").value).replace(/\D/g,""),10) || 0;
+  const precio = parseInt(String($("#pubPre").value).replace(/\D/g,""),10) || 0;
+  const vto = $("#pubVto").value ? new Date($("#pubVto").value + "T12:00:00") : addDays(45);
+  const dias = Math.max(0, Math.round((vto - hoy) / 86400000));
+  if (!det || !precio){ toast("Cargá determinaciones y precio para publicar"); return; }
+  S.reactivos.push({
+    id:"P" + Date.now(), r:$("#pubReac").value || "Reactivo sin nombre", pres:"Publicación manual",
+    lote:$("#pubLote").value || "SIN-LOTE", dias, det, precio, ref:Math.round(precio*1.6),
+    lab:MI_LAB, loc:"Godoy Cruz", cons:$("#pubCond").value, env:$("#pubEnv").value,
+    frac:parseInt($("#pubFrac").value,10), mine:true
+  });
+  cerrar();
+  S.tab = "mias";
+  $$('.tabs button').forEach(x => x.setAttribute("aria-selected", String(x.dataset.tab === "mias")));
+  ["red","mias","mov"].forEach(t => { $("#tab-" + t).hidden = (t !== "mias"); });
+  renderM2();
+  toast("Publicado en la red: " + det + " determinaciones visibles para " + (LABS.length - 1) + " laboratorios");
+});
+
+function renderM2(){ renderKpis(); renderOfertas(); renderMovimientos(); }
+
+/* ══════════════ TRAZABILIDAD ══════════════ */
+
+const hhmm = d => d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"});
+const sello = (base, min) => { const d = new Date(base.getTime() + min*60000); return fDate(d) + " · " + hhmm(d); };
+
+function evHTML(e){
+  return '<div class="ev ' + (e.st || "done") + '">' +
+    '<span class="bullet">' + (e.st === "pend" ? "" : "✓") + '</span>' +
+    '<div><div class="when">' + e.when + '</div><div class="what">' + esc(e.what) + '</div>' +
+    '<div class="det">' + e.det + '</div>' +
+    (e.key ? '<span class="key ' + (e.lot ? "lot" : "") + '">' + esc(e.key) + '</span>' : '') +
+    '</div></div>';
+}
+
+function renderTraza(){
+  const o = S.emitida, r = S.reserva;
+  const base = o.ts, vivo = !o.seed;
+  const principal = o.cs[0];
+  const rp = byCode[principal];
+  const p = preanalitica(o.cs);
+
+  $("#tzRef").innerHTML = "Orden " + esc(o.id) + "<br>Lote " + esc(r.lote);
+
+  $("#tlAnalisis").innerHTML = [
+    { when: sello(base, 0), what: "Indicación médica",
+      det: "Dra. L. Ibarra selecciona " + esc(rp.a) + " — " + esc(rp.mom) + " desde el desplegable del catálogo. " + o.cs.length + " estudios en total.",
+      key: principal },
+    { when: sello(base, 2), what: "Receta electrónica emitida",
+      det: "La orden viaja con " + o.cs.length + " códigos únicos. Ningún ítem en texto libre.",
+      key: o.id },
+    { when: sello(base, vivo ? 95 : 95), what: "Recepción y rotulado en el laboratorio",
+      det: p.tubos.length + " tubos rotulados según el tipo de muestra de cada registro. Sin consulta al consultorio.",
+      st: vivo ? "pend" : "done" },
+    { when: sello(base, 150), what: "Procesamiento",
+      det: "La determinación se realiza con el lote reservado en la bolsa de reactivos.",
+      key: r.lote, lot: true, st: vivo ? "pend" : "done" },
+    { when: sello(base, 260), what: "Informe de resultados",
+      det: "El resultado se publica bajo el mismo código con el que se indicó, con su unidad y su valor de referencia (" + esc(rp.u) + " · VR " + esc(rp.vr) + ").",
+      key: principal, st: vivo ? "pend" : "done" }
+  ].map(evHTML).join("");
+
+  const vto = addDays(r.dias);
+  $("#tlReactivo").innerHTML = [
+    { when: fDate(addDays(-(45 - Math.min(40, r.dias)))), what: "Publicación del excedente",
+      det: esc(r.lab) + " (" + esc(r.loc) + ") publica el sobrante del kit: lote, cantidad de determinaciones, vencimiento y precio por uso.",
+      key: r.lote, lot: true },
+    { when: fDate(addDays(-9)), what: "Alerta de vencimiento a la red",
+      det: "ARCION avisa a los nodos que el lote vence el " + fDate(vto) + ". A partir de ahí el excedente aparece priorizado en la búsqueda." },
+    { when: r.seed ? fDate(addDays(-4)) : sello(new Date(), 0), what: "Reserva con pago previo",
+      det: MI_LAB + " reserva " + fNum(r.det) + " determinaciones por " + fMoney(r.det * r.precio) + ". La plataforma retiene el pago." },
+    { when: r.seed ? fDate(addDays(-3)) : sello(new Date(), 180), what: "Traslado y recepción",
+      det: "Conservación " + esc(r.cons) + " durante el traslado. El nodo receptor confirma la recepción y las condiciones.",
+      st: r.seed ? "done" : "pend" },
+    { when: r.seed ? fDate(addDays(-2)) : sello(new Date(), 1440), what: "Consumo y liquidación",
+      det: "Cada determinación descuenta del lote y queda asociada al informe. El pago se libera al laboratorio que publicó.",
+      key: r.lote, lot: true, st: r.seed ? "done" : "pend" }
+  ].map(evHTML).join("");
+}
+
+/* ══════════════ DIÁLOGOS, AVISOS Y ARRANQUE ══════════════ */
+
+let abierto = null;
+function abrir(sel){
+  abierto = $(sel);
+  abierto.hidden = false;
+  const f = abierto.querySelector("button, input");
+  if (f) f.focus();
+}
+function cerrar(){ if (abierto){ abierto.hidden = true; abierto = null; } }
+$$(".overlay").forEach(ov => {
+  ov.addEventListener("click", e => { if (e.target === ov || e.target.closest("[data-close]")) cerrar(); });
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") cerrar(); });
+
+let toastT;
+function toast(msg){
+  $("#toastTxt").textContent = msg;
+  $("#toast").hidden = false;
+  clearTimeout(toastT);
+  toastT = setTimeout(() => { $("#toast").hidden = true; }, 3800);
+}
+
+$("#btnGuion").addEventListener("click", () => abrir("#ovGuion"));
+$("#btnReset").addEventListener("click", () => {
+  initState();
+  $("#q").value = "";
+  S.tab = "red";
+  $$('.tabs button').forEach(x => x.setAttribute("aria-selected", String(x.dataset.tab === "red")));
+  ["red","mias","mov"].forEach(t => { $("#tab-" + t).hidden = (t !== "red"); });
+  renderAll();
+  irA("m1");
+  toast("Demo reiniciada");
+});
+
+function renderAll(){
+  $("#catCount").textContent = CATALOGO.length;
+  $("#labCount").textContent = LABS.length;
+  renderChips(); renderResultados(); renderOrden(); renderM2(); renderTraza();
+}
+
+initState();
+$("#pubVto").value = addDays(45).toISOString().slice(0,10);
+renderAll();
+</script>
+
+</body>
+</html>

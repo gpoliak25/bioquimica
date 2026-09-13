@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio conectado · EISPLUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A; --orange:#F3931F; --orange2:#E8720C; --grey:#E6E7E8;
+    --light:#F5F6F8; --dark:#2B2B2B; --muted:#6B7280; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#0f1729;font-family:Archivo,Calibri,"Segoe UI",Arial,sans-serif;color:var(--dark);overflow:hidden}
+  .deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+  .slide{
+    position:absolute;width:1280px;height:720px;background:var(--white);
+    padding:52px 68px;display:none;flex-direction:column;
+    transform-origin:center;box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  .slide.active{display:flex}
+  .slide.dark{background:var(--navy);color:var(--white)}
+  h1{font-size:34px;font-weight:700;color:var(--navy);line-height:1.15}
+  .dark h1{color:var(--white)}
+  .sub{font-size:17px;color:var(--muted);margin-top:8px}
+  .body{flex:1;margin-top:32px;display:flex;gap:32px}
+  .foot{position:absolute;right:68px;bottom:28px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+  .dark .foot{color:var(--grey)}
+  .num{width:44px;height:44px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;flex:none}
+  .num.navy{background:var(--navy)}
+  .card{background:var(--light);border-radius:12px;padding:28px 32px}
+  .card.navy{background:var(--navy);color:var(--white)}
+  h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:10px}
+  .card.navy h3{color:var(--white)}
+  p{font-size:15px;line-height:1.45}
+  ul{list-style:none;font-size:15px;line-height:1.4}
+  li{padding-left:16px;position:relative;margin-bottom:9px}
+  li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+  .card.navy li{color:var(--grey)}
+  .note{font-size:13px;color:var(--muted);font-style:italic;margin-top:auto;padding-top:16px}
+  .tag{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:5px 12px;border-radius:4px;margin-bottom:14px}
+  .tag.navy{background:var(--navy)}
+  /* portada */
+  .cover{justify-content:center}
+  .cover h1{font-size:60px;margin-bottom:18px}
+  .cover .lead{font-size:24px;color:var(--grey);line-height:1.35;max-width:900px}
+  .cover .meta{margin-top:40px;font-size:15px;color:var(--grey);display:flex;align-items:center;gap:12px}
+  .dot{width:12px;height:12px;border-radius:50%;background:var(--orange)}
+  /* rows */
+  .rows{flex-direction:column}
+  .row{display:flex;gap:24px;align-items:flex-start}
+  .row h3{margin-bottom:6px}
+  /* stat */
+  .stat{font-size:72px;font-weight:700;color:var(--orange);line-height:1}
+  .statlabel{font-size:16px;color:var(--muted);margin:6px 0 22px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;font-weight:600}
+  td{padding:9px 12px;border-bottom:1px solid #D1D5DB}
+  /* steps */
+  .steps{display:flex;gap:18px;align-items:flex-start;margin-top:40px}
+  .step{flex:1;text-align:center}
+  .step .num{margin:0 auto 18px;width:56px;height:56px;font-size:22px}
+  .step h3{font-size:18px}
+  .step p{font-size:13.5px;color:var(--dark)}
+  .arrowline{flex:none;width:40px;height:2px;background:#9CA3AF;margin-top:27px;position:relative}
+  .arrowline::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid #9CA3AF}
+  .band{background:var(--grey);border-radius:12px;padding:20px 28px;font-size:15px;margin-top:auto}
+  .band b{color:var(--navy)}
+  /* flow cards */
+  .flow{display:flex;gap:20px}
+  .flow .card{flex:1;display:flex;flex-direction:column;gap:12px}
+  .flow .head{display:flex;align-items:center;gap:12px}
+  .flow .head h3{margin:0;font-size:17px}
+  .flow .num{width:36px;height:36px;font-size:15px}
+  /* cols */
+  .cols{display:flex;gap:24px;flex:1}
+  .cols .card{flex:1;display:flex;flex-direction:column}
+  .cols .head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .cols .head h3{margin:0}
+  .cols .num{width:36px;height:36px;font-size:15px}
+  /* arch */
+  .arch{position:relative;flex:1;margin-top:28px}
+  .box{position:absolute;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 16px}
+  .box b{font-size:15px}
+  .box span{font-size:11px;margin-top:3px}
+  .box.grey{background:var(--grey);color:var(--navy)}
+  .box.orange{background:var(--orange);color:#fff}
+  .box.navy{background:var(--navy);color:#fff}
+  .harrow{position:absolute;height:2px;background:#6B7280}
+  .harrow::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid #6B7280}
+  .lbl{position:absolute;font-size:10.5px;color:var(--muted);text-align:center;width:110px}
+  .frame{position:absolute;border:1px dashed #9CA3AF}
+  /* phases */
+  .phases{display:flex;gap:24px;flex:1}
+  .phase{flex:1;display:flex;flex-direction:column}
+  .phase .hd{background:var(--navy);color:#fff;padding:14px 22px;border-radius:12px 12px 0 0}
+  .phase .hd small{display:block;font-size:12px;opacity:.85}
+  .phase .hd b{font-size:20px}
+  .phase.accent .hd{background:var(--orange)}
+  .phase .card{border-radius:0 0 12px 12px;flex:1}
+  /* nav */
+  .nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center;color:#fff;font-size:13px;opacity:.7;z-index:5}
+  .nav button{background:rgba(255,255,255,.12);border:0;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px}
+  .nav button:hover{background:rgba(255,255,255,.25)}
+  .nav button:focus-visible{outline:2px solid var(--orange)}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide dark cover active">
+  <h1>Laboratorio conectado</h1>
+  <p class="lead">Catálogo único de análisis integrado a la receta electrónica y bolsa de reactivos en red sobre ARCION</p>
+  <div class="meta"><span class="dot"></span> Propuesta de solución · EISPLUS · Septiembre 2026</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h1>Punto de partida</h1>
+  <p class="sub">Dos necesidades concretas planteadas desde la práctica bioquímica</p>
+  <div class="body rows">
+    <div class="card row"><div class="num">1</div><div>
+      <h3>El médico no tiene un catálogo preciso para indicar análisis</h3>
+      <p>Hoy la indicación es texto libre o listas genéricas. Un mismo estudio tiene variantes que importan: momento de la toma (basal, 30', 60', 120'), método, muestra, unidad. Sin esa granularidad, el laboratorio interpreta y el circuito pierde precisión y trazabilidad.</p>
+    </div></div>
+    <div class="card row"><div class="num">2</div><div>
+      <h3>Los reactivos sobrantes se vencen sin uso</h3>
+      <p>Los kits se compran por lote de determinaciones. Cuando un laboratorio no llega a consumirlos antes del vencimiento, el excedente se pierde: es costo hundido para uno y faltante para otro laboratorio de la misma red.</p>
+    </div></div>
+  </div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h1>La solución en un vistazo</h1>
+  <p class="sub">Dos módulos independientes, una misma plataforma</p>
+  <div class="body cols">
+    <div class="card">
+      <span class="tag">Módulo 1</span>
+      <h3 style="font-size:26px">Catálogo maestro de análisis</h3>
+      <p>Base única y tipificada de ~10.000 registros, con el máximo nivel de detalle, expuesta como lista desplegable en la receta electrónica.</p>
+      <p class="note" style="color:var(--orange2)">Integra con: receta electrónica</p>
+    </div>
+    <div class="card">
+      <span class="tag navy">Módulo 2</span>
+      <h3 style="font-size:26px">Bolsa de reactivos en red</h3>
+      <p>Repositorio único donde cada laboratorio publica excedentes próximos a vencer y la red los consume con pago previo, sobre el motor de ARCION.</p>
+      <p class="note" style="color:var(--orange2)">Integra con: ARCION (red publica / red consume)</p>
+    </div>
+  </div>
+  <p class="note">Ambos módulos comparten identidad de usuario, red de laboratorios y capa de datos.</p>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h1>Módulo 1 · Catálogo maestro de análisis</h1>
+  <p class="sub">Un registro por cada variante clínicamente relevante</p>
+  <div class="body">
+    <div style="flex:0 0 380px">
+      <div class="stat">~10.000</div>
+      <div class="statlabel">registros tipificados</div>
+      <p>Cada registro combina las dimensiones que hacen distinto a un estudio: analito, momento de la toma, método, tipo de muestra, unidad y valores de referencia.</p>
+    </div>
+    <div style="flex:1">
+      <h3>Ejemplo: glucemia</h3>
+      <table>
+        <tr><th>Registro</th><th>Analito</th><th>Momento</th><th>Método</th></tr>
+        <tr><td>GLU-001</td><td>Glucemia</td><td>Basal</td><td>Enzimático hexoquinasa</td></tr>
+        <tr><td>GLU-002</td><td>Glucemia</td><td>30 minutos post carga</td><td>Enzimático hexoquinasa</td></tr>
+        <tr><td>GLU-003</td><td>Glucemia</td><td>60 minutos post carga</td><td>Enzimático hexoquinasa</td></tr>
+        <tr><td>GLU-004</td><td>Glucemia</td><td>120 minutos post carga</td><td>Enzimático hexoquinasa</td></tr>
+        <tr><td>GLU-011</td><td>Glucemia</td><td>Basal</td><td>Glucosa oxidasa</td></tr>
+      </table>
+      <p class="note">Un mismo analito se abre en tantos registros como combinaciones válidas existan. Es esa granularidad la que permite que el médico indique exactamente lo que necesita y el laboratorio reciba una orden sin ambigüedad.</p>
+    </div>
+  </div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h1>Cómo se consolida el catálogo</h1>
+  <p class="sub">De múltiples fuentes a una base única gobernada</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Relevar</h3><p>Fuentes actuales: sistemas de laboratorio, nomencladores, listas propias y de la red.</p></div>
+    <div class="arrowline"></div>
+    <div class="step"><div class="num navy">2</div><h3>Normalizar</h3><p>Unificar nombres, sinónimos, unidades y abreviaturas. Eliminar duplicados.</p></div>
+    <div class="arrowline"></div>
+    <div class="step"><div class="num">3</div><h3>Tipificar</h3><p>Descomponer cada estudio en sus dimensiones: analito, momento, método, muestra, unidad.</p></div>
+    <div class="arrowline"></div>
+    <div class="step"><div class="num navy">4</div><h3>Codificar</h3><p>Asignar código único y mapear a nomencladores de referencia (NBU, LOINC) para interoperar.</p></div>
+    <div class="arrowline"></div>
+    <div class="step"><div class="num">5</div><h3>Gobernar</h3><p>Definir quién da de alta, modifica y da de baja registros. Versionado y auditoría.</p></div>
+  </div>
+  <div class="band"><b>Rol del bioquímico:</b> validación clínica de cada registro y de la lógica de tipificación. <b>Rol de EISPLUS:</b> ingeniería de datos, consolidación, modelo y herramienta de mantenimiento del catálogo.</div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h1>Integración con la receta electrónica</h1>
+  <p class="sub">El médico elige de una lista; el laboratorio recibe una orden exacta</p>
+  <div class="body" style="flex-direction:column">
+    <div class="flow">
+      <div class="card"><div class="head"><div class="num">1</div><h3>Médico</h3></div><p>Indica el estudio desde un desplegable con búsqueda inteligente sobre el catálogo.</p></div>
+      <div class="card"><div class="head"><div class="num">2</div><h3>Receta electrónica</h3></div><p>La orden viaja con el código único del registro, no con texto libre.</p></div>
+      <div class="card"><div class="head"><div class="num">3</div><h3>Laboratorio</h3></div><p>Recibe exactamente qué analito, momento y método. Sin reinterpretación.</p></div>
+      <div class="card"><div class="head"><div class="num">4</div><h3>Resultado</h3></div><p>Trazabilidad completa de indicación a informe, con el mismo código en todo el circuito.</p></div>
+    </div>
+    <div style="margin-top:32px">
+      <h3>Puntos a definir con la plataforma de receta electrónica</h3>
+      <ul>
+        <li>Mecanismo de integración (API, estándar de interoperabilidad) y frecuencia de sincronización del catálogo.</li>
+        <li>Reglas de búsqueda: sinónimos, favoritos por especialidad, paneles o perfiles de estudios frecuentes.</li>
+        <li>Encuadre normativo de la receta electrónica en Argentina y requisitos de las plataformas habilitadas.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h1>Módulo 2 · Bolsa de reactivos en red</h1>
+  <p class="sub">Lo que un laboratorio no va a usar, otro lo necesita</p>
+  <div class="body">
+    <div class="card" style="flex:0 0 520px;align-self:flex-start">
+      <h3>Un caso típico</h3>
+      <div class="row" style="align-items:center;margin-top:18px"><div class="stat" style="font-size:44px;color:var(--navy);width:110px">50</div><p>determinaciones en el kit de orina completa</p></div>
+      <div class="row" style="align-items:center;margin-top:22px"><div class="stat" style="font-size:44px;color:var(--navy);width:110px">30</div><p>ya utilizadas por el laboratorio</p></div>
+      <div class="row" style="align-items:center;margin-top:22px"><div class="stat" style="font-size:44px;width:110px">20</div><p>disponibles, con vencimiento próximo</p></div>
+    </div>
+    <div style="flex:1">
+      <h3>Cómo funciona</h3>
+      <div class="row" style="margin-top:12px"><div class="num" style="width:36px;height:36px;font-size:15px">1</div><div><h3 style="font-size:16px;margin-bottom:4px">Publicar</h3><p style="font-size:14px">El laboratorio carga el excedente: reactivo, lote, cantidad de determinaciones, vencimiento y precio por uso.</p></div></div>
+      <div class="row" style="margin-top:18px"><div class="num" style="width:36px;height:36px;font-size:15px">2</div><div><h3 style="font-size:16px;margin-bottom:4px">Consumir</h3><p style="font-size:14px">Otro laboratorio de la red lo encuentra, reserva y paga previamente por las determinaciones que va a usar.</p></div></div>
+      <div class="row" style="margin-top:18px"><div class="num" style="width:36px;height:36px;font-size:15px">3</div><div><h3 style="font-size:16px;margin-bottom:4px">Liquidar</h3><p style="font-size:14px">La plataforma registra el consumo, transfiere el pago y actualiza el stock disponible del reactivo.</p></div></div>
+    </div>
+  </div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h1>Por qué sobre ARCION</h1>
+  <p class="sub">El mecanismo ya existe: la red publica, la red consume</p>
+  <p style="margin-top:24px">ARCION resuelve hoy exactamente esta lógica para hemocomponentes: un nodo publica disponibilidad, la red la ve y la consume con reglas de vencimiento, trazabilidad y liquidación. La bolsa de reactivos reutiliza ese motor con un nuevo tipo de ítem.</p>
+  <div class="cols" style="margin-top:28px">
+    <div class="card">
+      <div class="head"><span class="dot" style="background:var(--navy)"></span><h3>Ya resuelto en ARCION</h3></div>
+      <ul><li>Red de nodos con identidad y permisos</li><li>Publicación de ítems con lote y vencimiento</li><li>Reserva, consumo y descuento de stock</li><li>Trazabilidad de cada movimiento</li><li>Alertas por vencimiento próximo</li></ul>
+    </div>
+    <div class="card">
+      <div class="head"><span class="dot"></span><h3>Se agrega para reactivos</h3></div>
+      <ul><li>Catálogo de reactivos y unidad de consumo (determinación)</li><li>Precio por uso y pago previo al consumo</li><li>Liquidación entre laboratorios</li><li>Reglas de aptitud: cadena de frío, apertura, fracción mínima</li></ul>
+    </div>
+  </div>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h1>Arquitectura de integración</h1>
+  <p class="sub">Una plataforma, dos módulos, dos integraciones externas</p>
+  <div class="arch">
+    <div class="frame" style="left:320px;top:0;width:560px;height:330px"></div>
+    <div class="lbl" style="left:320px;top:336px;width:560px">Plataforma del laboratorio (capa común: usuarios, red, datos, auditoría)</div>
+    <div class="box grey" style="left:0;top:30px;width:220px;height:110px"><b>Médico</b><span>receta electrónica</span></div>
+    <div class="box grey" style="left:0;top:200px;width:220px;height:110px"><b>Laboratorios de la red</b><span>bioquímicos</span></div>
+    <div class="box orange" style="left:340px;top:30px;width:520px;height:110px"><b>Módulo 1 · Catálogo maestro</b><span>~10.000 registros tipificados · API de consulta</span></div>
+    <div class="box navy" style="left:340px;top:200px;width:520px;height:110px"><b>Módulo 2 · Bolsa de reactivos</b><span>publicación · reserva · pago previo · consumo</span></div>
+    <div class="box grey" style="left:920px;top:30px;width:220px;height:110px"><b>Plataforma de receta electrónica</b></div>
+    <div class="box grey" style="left:920px;top:200px;width:220px;height:110px"><b>ARCION</b><span>motor de red: publica / consume</span></div>
+    <div class="harrow" style="left:220px;top:70px;width:120px"></div><div class="lbl" style="left:225px;top:52px">indica estudio</div>
+    <div class="harrow" style="left:220px;top:100px;width:120px"></div><div class="lbl" style="left:225px;top:106px">recibe orden</div>
+    <div class="harrow" style="left:220px;top:255px;width:120px"></div><div class="lbl" style="left:225px;top:236px">publica excedentes</div>
+    <div class="harrow" style="left:860px;top:85px;width:60px"></div><div class="lbl" style="left:835px;top:64px">sincroniza catálogo</div>
+    <div class="harrow" style="left:860px;top:255px;width:60px"></div><div class="lbl" style="left:835px;top:234px">publica / consume</div>
+  </div>
+  <p class="note">Trazabilidad end to end: el mismo código de análisis en la indicación, la orden y el informe; el mismo lote de reactivo desde la publicación hasta el consumo.</p>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h1>Valor para cada actor</h1>
+  <div class="cols" style="margin-top:32px">
+    <div class="card"><div class="head"><div class="num navy">1</div><h3>Para el médico</h3></div>
+      <ul><li>Indica en segundos, sin ambigüedad</li><li>Menos llamados del laboratorio para aclarar</li><li>Perfiles y favoritos por especialidad</li></ul></div>
+    <div class="card navy"><div class="head"><div class="num">2</div><h3>Para el laboratorio</h3></div>
+      <ul><li>Órdenes exactas: menos errores de preanalítica</li><li>Recupera valor de reactivos que se iban a vencer</li><li>Accede a reactivos sin comprar el kit completo</li></ul></div>
+    <div class="card"><div class="head"><div class="num navy">3</div><h3>Para la red</h3></div>
+      <ul><li>Un catálogo común como lenguaje compartido</li><li>Menos desperdicio, más capacidad instalada</li><li>Base para nuevos servicios sobre la misma red</li></ul></div>
+  </div>
+  <p class="note">Ahorro estimable en la bolsa de reactivos: determinaciones recuperadas × costo unitario del kit. A cuantificar con datos reales de la red en la etapa de relevamiento.</p>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h1>Hoja de ruta propuesta</h1>
+  <p class="sub">Tres fases, con valor entregado desde la primera</p>
+  <div class="phases" style="margin-top:28px">
+    <div class="phase"><div class="hd"><small>Fase 1</small><b>Catálogo maestro</b></div><div class="card">
+      <ul><li>Relevamiento de fuentes y nomencladores</li><li>Modelo de tipificación validado con el bioquímico</li><li>Consolidación y carga de los ~10.000 registros</li><li>Herramienta de mantenimiento y gobierno</li></ul></div></div>
+    <div class="phase"><div class="hd"><small>Fase 2</small><b>Receta electrónica</b></div><div class="card">
+      <ul><li>Definición de integración con la plataforma de receta</li><li>API de consulta del catálogo y búsqueda inteligente</li><li>Piloto con un grupo de médicos y el laboratorio</li><li>Ajuste de sinónimos, perfiles y favoritos</li></ul></div></div>
+    <div class="phase accent"><div class="hd"><small>Fase 3</small><b>Bolsa de reactivos</b></div><div class="card">
+      <ul><li>Catálogo de reactivos y reglas de aptitud</li><li>Extensión de ARCION: pago previo y liquidación</li><li>Piloto con laboratorios de la red</li><li>Apertura a toda la red</li></ul></div></div>
+  </div>
+  <p class="note">Plazos y alcance por fase a acordar luego del relevamiento inicial.</p>
+  <div class="foot">EISPLUS</div>
+</section>
+
+<!-- 12 -->
+<section class="slide dark">
+  <h1 style="font-size:44px">Próximos pasos</h1>
+  <div class="body rows" style="gap:26px;margin-top:44px">
+    <div class="row" style="align-items:center"><div class="num">1</div><p style="font-size:19px">Sesión de relevamiento: fuentes actuales del catálogo y criterios de tipificación</p></div>
+    <div class="row" style="align-items:center"><div class="num">2</div><p style="font-size:19px">Identificar la plataforma de receta electrónica objetivo y su vía de integración</p></div>
+    <div class="row" style="align-items:center"><div class="num">3</div><p style="font-size:19px">Relevar con 3 a 5 laboratorios de la red el volumen real de reactivos excedentes</p></div>
+    <div class="row" style="align-items:center"><div class="num">4</div><p style="font-size:19px">Propuesta técnica y plan de trabajo por fases</p></div>
+  </div>
+  <div class="foot" style="left:68px;right:auto">EISPLUS · Mendoza</div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="Anterior">‹</button>
+  <span id="counter">1 / 12</span>
+  <button id="next" aria-label="Siguiente">›</button>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    document.getElementById('counter').textContent=(i+1)+' / '+slides.length;
+    location.hash=i+1;
+  }
+  function fit(){
+    const sc=Math.min(window.innerWidth/1280,window.innerHeight/720)*0.96;
+    slides.forEach(s=>s.style.transform='scale('+sc+')');
+  }
+  document.getElementById('prev').onclick=()=>show(i-1);
+  document.getElementById('next').onclick=()=>show(i+1);
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1);}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1);}
+    if(e.key==='Home')show(0); if(e.key==='End')show(slides.length-1);
+  });
+  document.getElementById('deck').addEventListener('click',e=>{ if(!e.target.closest('.nav')) show(i+1); });
+  window.addEventListener('resize',fit);
+  fit(); show(parseInt(location.hash.slice(1))-1||0);
+</script>
+</body>
+</html>
