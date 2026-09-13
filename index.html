@@ -65,6 +65,7 @@ button{font:inherit;color:inherit}
 .brand .kind{font-size:11px;color:#9FB0CD;letter-spacing:.04em}
 .nav{display:flex;flex-direction:column;gap:4px}
 .nav .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C9DBC;margin-bottom:6px}
+.nav .lbl.mt{margin-top:16px}
 .nav button{display:flex;gap:11px;align-items:flex-start;text-align:left;width:100%;background:transparent;border:0;border-radius:8px;padding:10px 11px;cursor:pointer;color:#D3DCEB}
 .nav button:hover{background:rgba(255,255,255,.07)}
 .nav button[aria-current="true"]{background:var(--brand-2);color:#fff;box-shadow:inset 3px 0 0 var(--orange)}
@@ -110,7 +111,7 @@ button{font:inherit;color:inherit}
 .empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:13px}
 .scroll{overflow:auto}
 
-/* ---------- módulo 1 ---------- */
+/* ---------- servicio 1 · receta ---------- */
 .m1{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
 .ctx{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
 .ctx > div{padding:10px 16px;border-right:1px solid var(--line-soft);flex:1;min-width:150px}
@@ -161,6 +162,77 @@ button{font:inherit;color:inherit}
 .order-foot{padding:14px 16px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:9px}
 .order-foot .cmp{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
 
+/* ---------- servicios 2 y 3 · paciente, derivaciones ---------- */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.pitem{display:grid;grid-template-columns:76px minmax(0,1fr);gap:13px;padding:11px 18px;border-bottom:1px solid var(--line-soft)}
+.pitem:last-child{border-bottom:0}
+.pitem .c{font-family:var(--mono);font-size:11px;color:var(--ink-2);background:var(--surface-3);border-radius:5px;padding:3px 6px;text-align:center;height:fit-content}
+.pitem .nm{font-size:13.5px;font-weight:600;color:var(--ink)}
+.pitem .mo{font-size:11.5px;color:var(--muted);margin-top:2px}
+.pitem .ind{font-size:12px;color:var(--orange-600);margin-top:5px;display:flex;gap:7px;align-items:flex-start}
+.pitem .ind i{width:5px;height:5px;border-radius:50%;background:var(--orange);flex:none;margin-top:6px}
+.prep{padding:14px 18px;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--ink-2)}
+.prep .ln{display:flex;gap:12px}
+.prep .ln b{color:var(--heading);min-width:106px;flex:none;font-weight:600}
+.sede{position:relative;padding:14px 18px 14px 21px;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:7px}
+.sede:last-child{border-bottom:0}
+.sede::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--line)}
+.sede.full::before{background:var(--ok)}
+.sede.part::before{background:var(--warn)}
+.sede.sel{background:var(--surface-2)}
+.sede .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sede h4{font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sede .loc{font-size:11.5px;color:var(--muted);margin-top:3px}
+.sede .dat{display:flex;flex-wrap:wrap;gap:3px 16px;font-size:11.5px;color:var(--ink-2)}
+.sede .falta{font-size:11.5px;color:var(--warn)}
+.sede .act{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.dcols{display:grid;grid-template-columns:1fr 1fr}
+.dcol{padding:14px 18px}
+.dcol:first-child{border-right:1px solid var(--line-soft)}
+.dcol h5{margin:0 0 9px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.ditem{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px;align-items:flex-start}
+.ditem:last-child{border-bottom:0}
+.ditem .c{font-family:var(--mono);font-size:10.5px;color:#fff;background:var(--brand);border-radius:4px;padding:2px 5px;flex:none}
+.ditem.out .c{background:var(--warn);color:#1A1206}
+.ditem em{color:var(--muted);font-size:11.5px;font-style:normal}
+.dmatch{padding:13px 18px;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:9px}
+.dmatch:last-child{border-bottom:0}
+.dmatch .nm{font-size:13.5px;font-weight:600;color:var(--ink)}
+.dmatch .mo{font-size:11.5px;color:var(--muted);margin-top:2px}
+.dmatch .cands{display:flex;gap:7px;flex-wrap:wrap}
+.dmatch .chip b{font-weight:500;color:var(--muted)}
+.dmatch .chip[aria-pressed="true"] b{color:#C9D6EC}
+.infrow{display:grid;grid-template-columns:78px minmax(0,1fr) 200px 132px;gap:12px;padding:9px 18px;border-bottom:1px solid var(--line-soft);align-items:center;font-size:12.5px}
+.infrow:last-child{border-bottom:0}
+.infrow .c{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);background:var(--surface-3);border-radius:4px;padding:2px 5px;text-align:center}
+.infrow .or{font-size:11.5px;color:var(--muted)}
+.infrow .or b{color:var(--ink-2);font-weight:600}
+
+/* ---------- servicio 4 · proveedores ---------- */
+.provgrid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:20px;align-items:start}
+.anlist{max-height:560px;overflow:auto}
+.anitem{display:flex;justify-content:space-between;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line-soft);padding:11px 16px;cursor:pointer;color:var(--ink);font-size:13px}
+.anitem:hover{background:var(--surface-2)}
+.anitem[aria-pressed="true"]{background:var(--orange-soft)}
+.anitem[aria-pressed="true"] .an{color:var(--orange-600)}
+.anitem .an{font-weight:600}
+.anitem .ar{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+.cross{background:var(--orange-soft);border:1px solid var(--orange);border-radius:var(--r);padding:12px 16px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:12.5px;color:var(--orange-600)}
+.prod{position:relative;padding:14px 18px 14px 21px;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:8px}
+.prod:last-child{border-bottom:0}
+.prod::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent}
+.prod.promo::before{background:var(--orange)}
+.prod .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.prod h4{font-size:14px}
+.prod .emp{font-size:11.5px;color:var(--muted);margin-top:2px}
+.prod .dat{display:flex;flex-wrap:wrap;gap:3px 16px;font-size:11.5px;color:var(--ink-2)}
+.prod .bot{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.prod .pr{font-size:11.5px;color:var(--muted)}
+.prod .pr b{font-family:var(--mono);font-size:16px;color:var(--heading);font-weight:600}
+.prod .nota{font-size:11.5px;color:var(--muted);border-top:1px solid var(--line-soft);padding-top:8px}
+.regs{display:flex;gap:5px;flex-wrap:wrap}
+.regs span{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--muted)}
+
 /* ---------- dialogs ---------- */
 .overlay{position:fixed;inset:0;background:rgba(12,20,38,.62);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40;backdrop-filter:blur(2px)}
 .overlay[hidden]{display:none}
@@ -187,7 +259,7 @@ button{font:inherit;color:inherit}
 .tube li{display:flex;gap:8px;font-size:12px;align-items:baseline}
 .tube li .c{font-family:var(--mono);font-size:10.5px;color:#fff;background:var(--brand);border-radius:4px;padding:1px 5px;flex:none}
 
-/* ---------- módulo 2 ---------- */
+/* ---------- bolsa de reactivos ---------- */
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;display:flex;flex-direction:column;gap:2px}
 .kpi .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -336,6 +408,12 @@ table.data tr.new td{background:var(--orange-soft)}
   .split{grid-template-columns:1fr}
   .split > div:first-child{border-right:0;border-bottom:1px solid var(--line)}
   .grid2{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .provgrid{grid-template-columns:1fr}
+  .dcols{grid-template-columns:1fr}
+  .dcol:first-child{border-right:0;border-bottom:1px solid var(--line-soft)}
+  .infrow{grid-template-columns:70px minmax(0,1fr);row-gap:4px}
+  .anlist{max-height:320px}
   .reslist{max-height:none}
   .res{grid-template-columns:1fr auto;gap:8px}
   .res .code{grid-column:1;justify-self:start;padding:2px 6px}
@@ -352,11 +430,15 @@ table.data tr.new td{background:var(--orange-soft)}
     <div class="kind">Prototipo funcional</div>
   </div>
 
-  <nav class="nav" aria-label="Módulos">
-    <span class="lbl">Módulos</span>
-    <button data-view="m1" aria-current="true"><span class="idx">01</span><span><span class="t">Catálogo y receta</span><span class="d">Indicar análisis</span></span></button>
-    <button data-view="m2"><span class="idx">02</span><span><span class="t">Bolsa de reactivos</span><span class="d">Publicar y consumir</span></span></button>
-    <button data-view="tz"><span class="idx">→</span><span><span class="t">Trazabilidad</span><span class="d">Código y lote end to end</span></span></button>
+  <nav class="nav" aria-label="Servicios">
+    <span class="lbl">Servicios sobre la base</span>
+    <button data-view="s1" aria-current="true"><span class="idx">01</span><span><span class="t">Receta médica</span><span class="d">Indicar desde la base</span></span></button>
+    <button data-view="s2"><span class="idx">02</span><span><span class="t">Paciente</span><span class="d">Indicaciones y sedes</span></span></button>
+    <button data-view="s3"><span class="idx">03</span><span><span class="t">Derivaciones</span><span class="d">Cobertura e informe único</span></span></button>
+    <button data-view="s4"><span class="idx">04</span><span><span class="t">Proveedores</span><span class="d">Productos por analito</span></span></button>
+    <span class="lbl mt">Complemento</span>
+    <button data-view="bolsa"><span class="idx">⊕</span><span><span class="t">Bolsa de reactivos</span><span class="d">Publicar y consumir</span></span></button>
+    <button data-view="tz"><span class="idx">→</span><span><span class="t">Trazabilidad</span><span class="d">Un código de punta a punta</span></span></button>
   </nav>
 
   <div class="rail-foot">
@@ -368,15 +450,15 @@ table.data tr.new td{background:var(--orange-soft)}
 
 <main class="main">
 
-<!-- ═══════════ MÓDULO 1 ═══════════ -->
-<section class="view on" id="view-m1">
+<!-- ═══════════ SERVICIO 1 · RECETA MÉDICA ═══════════ -->
+<section class="view on" id="view-s1">
   <div class="vhead">
     <div>
-      <div class="eyebrow">Módulo 1</div>
-      <h1>Catálogo maestro en la receta electrónica</h1>
-      <p class="sub">El médico busca sobre el catálogo tipificado y la orden viaja con el código único de cada registro. Ninguna indicación sale como texto libre.</p>
+      <div class="eyebrow">Servicio 1 · Receta médica</div>
+      <h1>El médico indica desde la base única</h1>
+      <p class="sub">La receta electrónica consulta la base diferenciada: el médico elige el registro exacto y la orden viaja con su código. Ninguna indicación sale como texto libre.</p>
     </div>
-    <div class="aside"><span id="catCount">0</span> registros en esta demo<br>~10.000 en el catálogo completo</div>
+    <div class="aside"><span id="catCount">0</span> registros en esta demo<br>~10.000 en la base completa</div>
   </div>
 
   <div class="ctx">
@@ -390,7 +472,7 @@ table.data tr.new td{background:var(--orange-soft)}
     <div class="panel">
       <div class="searchbox">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
-        <input id="q" type="search" autocomplete="off" placeholder="Buscar análisis: nombre, sinónimo, código, método…" aria-label="Buscar en el catálogo">
+        <input id="q" type="search" autocomplete="off" placeholder="Buscar análisis: nombre, sinónimo, código, método…" aria-label="Buscar en la base de análisis">
       </div>
       <div class="filters">
         <div class="frow"><span class="lead">Área</span><div class="chips" id="areaChips"></div></div>
@@ -420,13 +502,124 @@ table.data tr.new td{background:var(--orange-soft)}
   </div>
 </section>
 
-<!-- ═══════════ MÓDULO 2 ═══════════ -->
-<section class="view" id="view-m2">
+<!-- ═══════════ SERVICIO 2 · PACIENTE ═══════════ -->
+<section class="view" id="view-s2">
   <div class="vhead">
     <div>
-      <div class="eyebrow">Módulo 2 · sobre ARCION</div>
+      <div class="eyebrow">Servicio 2 · Paciente</div>
+      <h1>Recibe el pedido, sabe cómo prepararse y dónde le hacen todo</h1>
+      <p class="sub">Con la orden ya codificada, el paciente recibe tres cosas juntas: el pedido médico, la indicación de cada ítem y las sedes de la red donde se hacen todos los estudios prescriptos, no algunos.</p>
+    </div>
+    <div class="aside" id="s2Ref"></div>
+  </div>
+
+  <div class="kpis" id="s2Kpis"></div>
+
+  <div class="two">
+    <div class="panel">
+      <div class="panel-h"><h3>Tu pedido</h3><span class="note" id="s2Count"></span></div>
+      <div id="s2Items"></div>
+      <div class="panel-h" style="border-top:1px solid var(--line-soft)"><h3>Cómo prepararte</h3><span class="note">Generado desde los registros de la base</span></div>
+      <div class="prep" id="s2Prep"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><h3>Dónde hacértelo</h3><span class="note">Cobertura declarada por cada sede</span></div>
+      <div id="s2Sedes"></div>
+      <div class="prep" style="border-top:1px solid var(--line-soft);color:var(--muted);font-size:11.5px">
+        Cada sede de la red declara qué registros de la base resuelve. El sistema cruza los ítems del pedido con esa cobertura y ordena primero las sedes que lo cubren completo; si ninguna lo cubre, propone la mejor combinación con derivación.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICIO 3 · DERIVACIONES ═══════════ -->
+<section class="view" id="view-s3">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Servicio 3 · Derivaciones interlaboratorios</div>
+      <h1>Lo que la sede no resuelve, lo deriva con el mismo código</h1>
+      <p class="sub">La sede procesa lo que hace y deriva el resto a laboratorios de la red, sin que el paciente vuelva al médico ni repita la extracción. El resultado vuelve al laboratorio derivante y arma un único informe.</p>
+    </div>
+    <div class="aside" id="s3Ref"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h3>Sede que recibe la orden</h3><span class="note">Elegí desde qué laboratorio de la red se mira este pedido</span></div>
+    <div style="padding:13px 18px"><div class="chips" id="s3Sedes"></div></div>
+  </div>
+
+  <div class="kpis" id="s3Kpis"></div>
+
+  <div class="two">
+    <div class="panel">
+      <div class="panel-h"><h3>Cobertura de la sede sobre esta orden</h3><span class="note" id="s3Cob"></span></div>
+      <div class="dcols">
+        <div class="dcol"><h5>Resuelve en sede</h5><div id="s3Ok"></div></div>
+        <div class="dcol"><h5>Requiere derivación</h5><div id="s3Falta"></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><h3>Propuesta de derivador</h3><button class="btn sm" id="btnDeriv" disabled>Enviar derivaciones</button></div>
+      <div id="s3Prop"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h3>Informe único al paciente</h3><span class="note" id="s3InfNote"></span></div>
+    <div id="s3Inf"></div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICIO 4 · PROVEEDORES ═══════════ -->
+<section class="view" id="view-s4">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Servicio 4 · Proveedores por analito</div>
+      <h1>Cada registro de la base tiene los productos que sirven para hacerlo</h1>
+      <p class="sub">Las empresas cargan su catálogo mapeado a la base. El bioquímico consulta por analito, no por marca, y compara productos, métodos y presentaciones para el mismo registro.</p>
+    </div>
+    <div class="aside" id="s4Ref"></div>
+  </div>
+
+  <div class="kpis" id="s4Kpis"></div>
+
+  <div class="provgrid">
+    <div class="panel">
+      <div class="panel-h"><h3>Analitos con producto cargado</h3><span class="note" id="s4AnNote"></span></div>
+      <div class="searchbox" style="padding:14px 16px 14px">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input id="qProv" type="search" autocomplete="off" placeholder="Buscar analito…" aria-label="Buscar analito">
+      </div>
+      <div class="anlist" id="s4Analitos"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div id="s4Cross"></div>
+      <div class="panel">
+        <div class="panel-h"><h3 id="s4Title">Productos</h3><span class="note" id="s4Note"></span></div>
+        <div style="padding:12px 18px;border-bottom:1px solid var(--line-soft)">
+          <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Registros de la base que resuelve</div>
+          <div class="regs" id="s4Regs"></div>
+        </div>
+        <div id="s4Prods"></div>
+      </div>
+      <div class="band">
+        <div><b>Para el bioquímico.</b> Entra por el analito que necesita resolver y ve qué hay en el mercado para ese registro, con el método y la presentación al lado. Si además hay excedente publicado en la red, lo ve primero.</div>
+        <div><b>Para el proveedor.</b> Un canal que hoy no existe: llega al bioquímico en el momento en que decide. Las promociones pagas por analito son la fuente que sostiene la operación de la plataforma.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COMPLEMENTO · BOLSA DE REACTIVOS ═══════════ -->
+<section class="view" id="view-bolsa">
+  <div class="vhead">
+    <div>
+      <div class="eyebrow">Complemento · sobre ARCION</div>
       <h1>Bolsa de reactivos en red</h1>
-      <p class="sub">Cada laboratorio publica las determinaciones que no va a usar antes del vencimiento. La red las encuentra, reserva y paga por adelantado sólo lo que consume.</p>
+      <p class="sub">Cada laboratorio publica las determinaciones que no va a usar antes del vencimiento, vinculadas al analito de la base. La red las encuentra, reserva y paga por adelantado sólo lo que consume.</p>
     </div>
     <div class="aside">Red Mendoza · <span id="labCount">0</span> laboratorios<br>Nodo activo: Lab. Bioanálisis Cuyo</div>
   </div>
@@ -468,24 +661,24 @@ table.data tr.new td{background:var(--orange-soft)}
     <div>
       <div class="eyebrow">Capa común</div>
       <h1>Trazabilidad end to end</h1>
-      <p class="sub">El mismo código de análisis desde la indicación hasta el informe; el mismo lote de reactivo desde la publicación hasta el consumo. Los dos hilos se cruzan en el momento del procesamiento.</p>
+      <p class="sub">El mismo código de la base desde la indicación del médico hasta el informe, pase o no por una derivación; el mismo lote de reactivo desde la publicación hasta el consumo. Los dos hilos se cruzan en el procesamiento.</p>
     </div>
     <div class="aside" id="tzRef"></div>
   </div>
 
   <div class="trace">
     <div class="panel">
-      <div class="panel-h"><h3>Hilo 1 · Código del análisis</h3><span class="note">Módulo 1 → receta electrónica</span></div>
+      <div class="panel-h"><h3>Hilo 1 · Código del análisis</h3><span class="note">Servicios 1 a 3</span></div>
       <div class="tl" id="tlAnalisis"></div>
     </div>
     <div class="panel">
-      <div class="panel-h"><h3>Hilo 2 · Lote del reactivo</h3><span class="note">Módulo 2 → ARCION</span></div>
+      <div class="panel-h"><h3>Hilo 2 · Lote del reactivo</h3><span class="note">Complemento → ARCION</span></div>
       <div class="tl" id="tlReactivo"></div>
     </div>
   </div>
 
   <div class="band">
-    <div><b>Un solo lenguaje.</b> El código <span class="mono">GLU-004</span> significa lo mismo para el médico que lo indica, para el sistema que transporta la orden y para el bioquímico que informa el resultado.</div>
+    <div><b>Un solo lenguaje.</b> El código <span class="mono">GLU-004</span> significa lo mismo para el médico que lo indica, para la sede que lo recibe, para el laboratorio al que se deriva y para el bioquímico que informa el resultado.</div>
     <div><b>Un solo lote.</b> Cada determinación consumida descuenta del lote publicado y queda asociada al informe, con laboratorio de origen y fecha de vencimiento.</div>
   </div>
 </section>
@@ -586,18 +779,20 @@ table.data tr.new td{background:var(--orange-soft)}
 <div class="overlay" id="ovGuion" hidden>
   <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="guionTitle">
     <div class="modal-h">
-      <div><h2 id="guionTitle">Guion de demostración</h2><p class="s">Cinco minutos, en este orden.</p></div>
+      <div><h2 id="guionTitle">Guion de demostración</h2><p class="s">Ocho minutos, en este orden.</p></div>
       <button class="closex" data-close>✕</button>
     </div>
     <div class="modal-b guion">
       <ol>
-        <li>Buscá <b>“azúcar”</b> en el catálogo: el sinónimo encuentra glucemia y aparecen las cuatro variantes de la curva, cada una con su momento y método. <b>Esto es lo que hoy no existe.</b></li>
-        <li>Aplicá el perfil <b>PTOG 75 g · curva completa</b>: cuatro registros exactos en un clic, con los tiempos de extracción ya definidos.</li>
-        <li>Agregá <b>HbA1c</b> y <b>Perfil lipídico</b> y emití la orden. Mostrá la comparación: a la izquierda lo que llega hoy en texto libre, a la derecha la orden por tubo con código.</li>
-        <li>Pasá al <b>Módulo 2</b>. Señalá el kit de TSH que vence en menos de dos semanas: 40 determinaciones que hoy se tiran. Reservá 20 y mostrá el pago previo y el ahorro.</li>
-        <li>Cerrá en <b>Trazabilidad</b>: el código que indicó el médico y el lote que reservó el laboratorio se encuentran en el mismo informe.</li>
+        <li><b>Servicio 1.</b> Buscá <b>“azúcar”</b>: el sinónimo encuentra glucemia y aparecen las variantes de la curva, cada una con su momento y su método. <b>Esto es lo que hoy no existe.</b></li>
+        <li>Aplicá el perfil <b>PTOG 75 g · curva completa</b>, agregá <b>Vitamina D</b> y <b>Vitamina B12</b>, y emití la orden. Mostrá la comparación: a la izquierda el texto libre de hoy, a la derecha la orden por tubo con código.</li>
+        <li><b>Servicio 2.</b> La misma orden vista por el paciente: cada ítem con su indicación y, abajo, las sedes de la red. Señalá cuántas cubren el pedido <b>completo</b> y cuántas no.</li>
+        <li><b>Servicio 3.</b> Parado en <b>Lab. Bioanálisis Cuyo</b>: resuelve la mayoría en sede y deriva lo que no hace, con el mismo código. Enviá las derivaciones y mostrá el informe único.</li>
+        <li><b>Servicio 4.</b> Entrá por el analito <b>Vitamina D 25-OH</b>: los productos del mercado para ese registro, con el promocionado arriba. Señalá el aviso de excedente en la red.</li>
+        <li><b>Complemento.</b> En la bolsa, el kit de TSH que vence en menos de dos semanas: 40 determinaciones que hoy se tiran. Reservá 20 y mostrá el pago previo y el ahorro.</li>
+        <li>Cerrá en <b>Trazabilidad</b>: el código que indicó el médico, la sede que eligió el paciente, el laboratorio al que se derivó y el lote de reactivo se encuentran en el mismo informe.</li>
       </ol>
-      <p style="margin-top:18px;font-size:12px;color:var(--muted)">Todos los datos son de ejemplo. El catálogo de esta demo es un subconjunto representativo del volumen real propuesto.</p>
+      <p style="margin-top:18px;font-size:12px;color:var(--muted)">Todos los datos son de ejemplo. La base de esta demo es un subconjunto representativo del volumen real propuesto.</p>
     </div>
     <div class="modal-f"><span></span><button class="btn sm" data-close>Entendido</button></div>
   </div>
@@ -611,7 +806,7 @@ table.data tr.new td{background:var(--orange-soft)}
 <script>
 /* ══════════════════════════════════════════════════════════════
    DATOS DE DEMOSTRACIÓN
-   Subconjunto representativo del catálogo maestro propuesto.
+   Subconjunto representativo de la base única propuesta.
    Cada registro es una combinación válida de analito + momento +
    método + muestra + unidad, con su código único y su mapeo a
    nomencladores de referencia (NBU / LOINC).
@@ -761,25 +956,73 @@ const PERFILES = [
 ];
 
 /* ══════════════════════════════════════════════════════════════
-   MÓDULO 2 · Red de laboratorios y excedentes publicados
+   COMPLEMENTO · Excedentes de reactivos publicados en la red
    Los vencimientos se calculan como desplazamiento en días desde
    hoy, para que la demo no quede desactualizada.
    ══════════════════════════════════════════════════════════════ */
 
+/* Cada sede declara sobre la base qué resuelve en su propio ámbito:
+   las áreas que cubre, las excepciones que deriva y lo que hace
+   fuera de su área. Es la misma declaración que alimenta la lista
+   de sedes del Servicio 2 y la propuesta de derivador del 3.     */
+
+const SEDES = [
+  {id:"BC", n:"Lab. Bioanálisis Cuyo", loc:"Godoy Cruz", dir:"Av. San Martín Sur 1240", tel:"261 424-8800",
+   hor:"Lun a vie 7:00 – 11:30 · Sáb 7:30 – 10:00", km:1.2, pl:"24 h", mia:true,
+   areas:["Química clínica","Hematología","Coagulación","Orina","Endocrinología","Inmunoserología"],
+   no:["VTD-001","PTH-001","ATG-001","B12-001","FOL-001","CHA-001","DDI-001","PRE-001","CRT-002","CRT-003","T3L-001","TES-001","PSA-002","FRO-001"]},
+
+  {id:"AN", n:"Lab. Andes", loc:"Ciudad", dir:"Belgrano 845", tel:"261 429-1100",
+   hor:"Lun a vie 7:00 – 12:00 y 16:00 – 19:00 · Sáb 7:30 – 11:00", km:4.8, pl:"24 h",
+   areas:["Química clínica","Hematología","Coagulación","Orina","Endocrinología","Inmunoserología"],
+   no:[], alta:true},
+
+  {id:"CE", n:"Lab. Central del Este", loc:"Junín", dir:"San Martín 312", tel:"263 442-7700",
+   hor:"Lun a vie 7:00 – 11:00", km:38, pl:"48 h",
+   areas:["Química clínica","Hematología","Coagulación","Orina","Endocrinología","Inmunoserología"],
+   no:["CRT-003","PRE-001","FRO-001"]},
+
+  {id:"SM", n:"Lab. San Martín", loc:"Guaymallén", dir:"Av. Bandera de los Andes 2140", tel:"261 445-3320",
+   hor:"Lun a vie 7:00 – 10:30", km:6.1, pl:"24 h",
+   areas:["Química clínica","Hematología","Coagulación","Orina"],
+   extra:["TSH-001","PCR-001","PCU-001","VDR-001"],
+   no:["PRE-001","FRO-001","RET-001","CLE-001","MAL-001","DDI-001"]},
+
+  {id:"CO", n:"Lab. Cordillera", loc:"Luján de Cuyo", dir:"San Martín 1580", tel:"261 498-6612",
+   hor:"Lun a vie 7:00 – 11:00 · Sáb 8:00 – 10:00", km:18, pl:"48 h",
+   areas:["Química clínica","Hematología","Orina","Endocrinología"],
+   no:["VTD-001","PTH-001","CRT-002","CRT-003","T3L-001","TES-001","B12-001","FOL-001","FRO-001","RET-001"]},
+
+  {id:"DV", n:"Lab. del Valle", loc:"Maipú", dir:"Pescara 460", tel:"261 481-9040",
+   hor:"Lun a vie 7:00 – 10:30", km:11, pl:"48 h",
+   areas:["Química clínica","Hematología","Orina"],
+   no:["PRE-001","FRO-001","RET-001","CLE-001"]},
+
+  {id:"GU", n:"Lab. Guaymallén", loc:"Guaymallén", dir:"Mitre 1290", tel:"261 431-5580",
+   hor:"Lun a vie 7:00 – 11:00", km:7.4, pl:"24 h",
+   areas:["Química clínica","Hematología","Orina","Inmunoserología"],
+   no:["HIV-001","HCV-001","CHA-001","TXG-001","TXM-001","PRE-001","FRO-001","RET-001","PSA-002"]},
+
+  {id:"SR", n:"Lab. San Rafael", loc:"San Rafael", dir:"Av. Mitre 1120", tel:"260 442-2210",
+   hor:"Lun a vie 7:00 – 11:00", km:232, pl:"72 h",
+   areas:["Química clínica","Hematología","Coagulación","Orina","Inmunoserología"],
+   no:["PRE-001","FRO-001","CHA-001","PSA-002","DDI-001"]}
+];
+
 const MI_LAB = "Lab. Bioanálisis Cuyo";
-const LABS = ["Lab. Bioanálisis Cuyo","Lab. San Martín","Lab. Central del Este","Lab. Andes","Lab. Cordillera","Lab. del Valle","Lab. Guaymallén","Lab. San Rafael"];
+const LABS = SEDES.map(s => s.n);
 
 const REACTIVOS_SEED = [
-  {id:"R1", r:"Orina completa · tiras reactivas 10 parámetros", pres:"Envase x 100 tiras", lote:"ORC-2508-K", dias:19,  det:20,  precio:1240, ref:2050, lab:"Lab. San Martín",      loc:"Guaymallén",   cons:"15 – 30 °C", env:"Envase abierto", frac:10, mine:false},
-  {id:"R2", r:"HbA1c · cartucho HPLC",                          pres:"Cartucho x 400 det.",  lote:"A1C-2601-C", dias:34,  det:120, precio:4900, ref:7400, lab:"Lab. Central del Este",loc:"Junín",        cons:"2 – 8 °C",   env:"Envase cerrado", frac:20, mine:false},
-  {id:"R3", r:"TSH · quimioluminiscencia",                      pres:"Kit x 100 det.",       lote:"TSH-2511-A", dias:11,  det:40,  precio:3700, ref:6900, lab:"Lab. Cordillera",      loc:"Luján de Cuyo",cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
-  {id:"R4", r:"Dímero D · inmunoturbidimetría",                 pres:"Kit x 60 det.",        lote:"DDI-2503-F", dias:26,  det:35,  precio:8400, ref:12900,lab:"Lab. del Valle",       loc:"Maipú",        cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
-  {id:"R5", r:"Perfil lipídico enzimático · Col/HDL/TG",        pres:"Set x 400 det.",       lote:"LIP-2602-D", dias:58,  det:300, precio:980,  ref:1750, lab:"Lab. San Rafael",      loc:"San Rafael",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:50, mine:false},
-  {id:"R6", r:"Vitamina D 25-OH · quimioluminiscencia",         pres:"Kit x 100 det.",       lote:"VTD-2604-B", dias:63,  det:55,  precio:9800, ref:14200,lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
-  {id:"R7", r:"Subunidad beta HCG · quimioluminiscencia",       pres:"Kit x 100 det.",       lote:"BHC-2509-E", dias:16,  det:25,  precio:4300, ref:7100, lab:"Lab. Guaymallén",      loc:"Guaymallén",   cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
-  {id:"R8", r:"Ferritina · quimioluminiscencia",                pres:"Kit x 50 det.",        lote:"FER-2512-H", dias:47,  det:22,  precio:5200, ref:8300, lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:5,  mine:false},
-  {id:"M1", r:"Insulinemia · quimioluminiscencia",              pres:"Kit x 100 det.",       lote:"INS-2507-G", dias:29,  det:45,  precio:6100, ref:9600, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase abierto", frac:10, mine:true},
-  {id:"M2", r:"Anti-HCV · ELISA",                               pres:"Placa x 96 det.",      lote:"HCV-2605-J", dias:41,  det:60,  precio:3900, ref:6200, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:24, mine:true}
+  {id:"R1", an:"ORC", r:"Orina completa · tiras reactivas 10 parámetros", pres:"Envase x 100 tiras", lote:"ORC-2508-K", dias:19,  det:20,  precio:1240, ref:2050, lab:"Lab. San Martín",      loc:"Guaymallén",   cons:"15 – 30 °C", env:"Envase abierto", frac:10, mine:false},
+  {id:"R2", an:"HBA", r:"HbA1c · cartucho HPLC",                          pres:"Cartucho x 400 det.",  lote:"A1C-2601-C", dias:34,  det:120, precio:4900, ref:7400, lab:"Lab. Central del Este",loc:"Junín",        cons:"2 – 8 °C",   env:"Envase cerrado", frac:20, mine:false},
+  {id:"R3", an:"TSH", r:"TSH · quimioluminiscencia",                      pres:"Kit x 100 det.",       lote:"TSH-2511-A", dias:11,  det:40,  precio:3700, ref:6900, lab:"Lab. Cordillera",      loc:"Luján de Cuyo",cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
+  {id:"R4", an:"DDI", r:"Dímero D · inmunoturbidimetría",                 pres:"Kit x 60 det.",        lote:"DDI-2503-F", dias:26,  det:35,  precio:8400, ref:12900,lab:"Lab. del Valle",       loc:"Maipú",        cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
+  {id:"R5", an:"COL", r:"Perfil lipídico enzimático · Col/HDL/TG",        pres:"Set x 400 det.",       lote:"LIP-2602-D", dias:58,  det:300, precio:980,  ref:1750, lab:"Lab. San Rafael",      loc:"San Rafael",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:50, mine:false},
+  {id:"R6", an:"VTD", r:"Vitamina D 25-OH · quimioluminiscencia",         pres:"Kit x 100 det.",       lote:"VTD-2604-B", dias:63,  det:55,  precio:9800, ref:14200,lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:10, mine:false},
+  {id:"R7", an:"BHC", r:"Subunidad beta HCG · quimioluminiscencia",       pres:"Kit x 100 det.",       lote:"BHC-2509-E", dias:16,  det:25,  precio:4300, ref:7100, lab:"Lab. Guaymallén",      loc:"Guaymallén",   cons:"2 – 8 °C",   env:"Envase abierto", frac:5,  mine:false},
+  {id:"R8", an:"FER", r:"Ferritina · quimioluminiscencia",                pres:"Kit x 50 det.",        lote:"FER-2512-H", dias:47,  det:22,  precio:5200, ref:8300, lab:"Lab. Andes",           loc:"Ciudad",       cons:"2 – 8 °C",   env:"Envase cerrado", frac:5,  mine:false},
+  {id:"M1", an:"INS", r:"Insulinemia · quimioluminiscencia",              pres:"Kit x 100 det.",       lote:"INS-2507-G", dias:29,  det:45,  precio:6100, ref:9600, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase abierto", frac:10, mine:true},
+  {id:"M2", an:"HCV", r:"Anti-HCV · ELISA",                               pres:"Placa x 96 det.",      lote:"HCV-2605-J", dias:41,  det:60,  precio:3900, ref:6200, lab:MI_LAB,                 loc:"Godoy Cruz",   cons:"2 – 8 °C",   env:"Envase cerrado", frac:24, mine:true}
 ];
 
 const MOV_SEED = [
@@ -787,6 +1030,61 @@ const MOV_SEED = [
   {dias:-7,  tipo:"Venta",   r:"Insulinemia · quimioluminiscencia",              lote:"INS-2507-G", det:15, imp:91500,  cp:"Lab. Andes",      est:"Liquidado"},
   {dias:-3,  tipo:"Consumo", r:"Vitamina D 25-OH · quimioluminiscencia",         lote:"VTD-2510-A", det:10, imp:-98000, cp:"Lab. Andes",      est:"En proceso"}
 ];
+
+
+/* ══════════════════════════════════════════════════════════════
+   SERVICIO 4 · Productos de proveedores mapeados a la base
+   Cada producto se carga contra el analito, no contra un catálogo
+   de marca: el bioquímico entra por el registro que necesita
+   resolver. Las promociones pagas son el ingreso de la plataforma.
+   ══════════════════════════════════════════════════════════════ */
+
+const PROVEEDORES = [
+  {an:"GLU", p:"GlucoQuant HK líquido", emp:"Diagnos Cuyo S.A.", tipo:"Reactivo", met:"Enzimático · hexoquinasa", pres:"R1 4×50 mL + R2 2×25 mL", det:800, precio:186, entrega:"48 h", promo:true, nota:"Calibrador y control bi-nivel incluidos en la primera compra."},
+  {an:"GLU", p:"Glucosa GOD-POD líquida", emp:"Bioreactivos del Plata", tipo:"Reactivo", met:"Glucosa oxidasa · GOD-POD", pres:"6×100 mL", det:1200, precio:121, entrega:"72 h", promo:false, nota:""},
+  {an:"GLU", p:"Control de química clínica bi-nivel", emp:"Lab Supply Andina", tipo:"Control", met:"Suero control liofilizado", pres:"2 niveles × 10×5 mL", det:200, precio:240, entrega:"96 h", promo:false, nota:"Cubre también urea, creatinina, lipídico y hepatograma."},
+
+  {an:"HBA", p:"A1c Direct · cartucho HPLC", emp:"Diagnos Cuyo S.A.", tipo:"Reactivo", met:"HPLC de intercambio catiónico", pres:"Cartucho x 400 det.", det:400, precio:4120, entrega:"48 h", promo:true, nota:"Certificado NGSP. Compatible con los analizadores más instalados en la red."},
+  {an:"HBA", p:"HbA1c inmunoturbidimétrica", emp:"Reactivos Andinos SRL", tipo:"Reactivo", met:"Inmunoturbidimetría", pres:"Kit x 200 det.", det:200, precio:3380, entrega:"72 h", promo:false, nota:""},
+
+  {an:"TSH", p:"TSH ultrasensible CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 100 det.", det:100, precio:3980, entrega:"48 h", promo:true, nota:"Sensibilidad funcional 0,01 µUI/mL."},
+  {an:"TSH", p:"TSH ELISA", emp:"Reactivos Andinos SRL", tipo:"Reactivo", met:"ELISA de captura", pres:"Placa x 96 det.", det:96, precio:2150, entrega:"72 h", promo:false, nota:"Para volúmenes bajos o laboratorios sin autoanalizador."},
+
+  {an:"T4L", p:"T4 libre CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 100 det.", det:100, precio:3640, entrega:"48 h", promo:false, nota:""},
+
+  {an:"VTD", p:"25-OH Vitamina D total CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 100 det.", det:100, precio:8900, entrega:"48 h", promo:true, nota:"Estandarizado contra LC-MS/MS. Detecta D2 y D3."},
+  {an:"VTD", p:"Vitamina D · calibradores y controles", emp:"Lab Supply Andina", tipo:"Calibrador", met:"Set de 6 niveles", pres:"6×2 mL", det:0, precio:0, entrega:"96 h", promo:false, nota:"Se cotiza por set. Compatible con plataformas CLIA abiertas."},
+
+  {an:"FER", p:"Ferritina CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 50 det.", det:50, precio:4980, entrega:"48 h", promo:false, nota:""},
+  {an:"FER", p:"Ferritina turbidimétrica", emp:"Bioreactivos del Plata", tipo:"Reactivo", met:"Inmunoturbidimetría potenciada con látex", pres:"R1 2×20 mL + R2 1×10 mL", det:120, precio:2740, entrega:"72 h", promo:true, nota:"Corre en el mismo autoanalizador de química clínica."},
+
+  {an:"B12", p:"Vitamina B12 CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia competitiva", pres:"Kit x 100 det.", det:100, precio:5240, entrega:"48 h", promo:false, nota:""},
+
+  {an:"ORC", p:"Tiras reactivas 10 parámetros", emp:"Insumos Mendoza S.R.L.", tipo:"Insumo", met:"Química seca · lectura refractométrica", pres:"Envase x 100 tiras", det:100, precio:1180, entrega:"24 h", promo:true, nota:"Lectura manual o en lector automático."},
+  {an:"ORC", p:"Control de orina bi-nivel", emp:"Lab Supply Andina", tipo:"Control", met:"Control liofilizado", pres:"2 niveles × 12×15 mL", det:0, precio:0, entrega:"96 h", promo:false, nota:"Se cotiza por set."},
+
+  {an:"DDI", p:"Dímero D inmunoturbidimétrico", emp:"Hemostasia Sur", tipo:"Reactivo", met:"Inmunoturbidimetría con látex", pres:"Kit x 60 det.", det:60, precio:7900, entrega:"72 h", promo:false, nota:"Unidades expresables en FEU."},
+
+  {an:"COL", p:"Colesterol CHOD-PAP líquido", emp:"Bioreactivos del Plata", tipo:"Reactivo", met:"Enzimático colorimétrico", pres:"6×100 mL", det:1200, precio:96, entrega:"72 h", promo:false, nota:""},
+  {an:"HDL", p:"HDL colesterol directo", emp:"Diagnos Cuyo S.A.", tipo:"Reactivo", met:"Enzimático directo sin precipitación", pres:"R1 2×40 mL + R2 1×20 mL", det:400, precio:310, entrega:"48 h", promo:true, nota:"Sin paso de precipitación: menos tiempo de banco."},
+  {an:"TRI", p:"Triglicéridos GPO-PAP", emp:"Bioreactivos del Plata", tipo:"Reactivo", met:"Enzimático colorimétrico", pres:"6×100 mL", det:1200, precio:104, entrega:"72 h", promo:false, nota:""},
+
+  {an:"CRE", p:"Creatinina enzimática", emp:"Diagnos Cuyo S.A.", tipo:"Reactivo", met:"Enzimático · creatininasa", pres:"R1 4×50 mL + R2 1×25 mL", det:500, precio:268, entrega:"48 h", promo:true, nota:"Trazable a IDMS: el filtrado glomerular estimado sale comparable entre sedes."},
+  {an:"CRE", p:"Creatinina cinética Jaffé", emp:"Reactivos Andinos SRL", tipo:"Reactivo", met:"Cinético · Jaffé compensado", pres:"6×100 mL", det:1000, precio:88, entrega:"72 h", promo:false, nota:""},
+
+  {an:"HEM", p:"Diluyente y lisante para contador hematológico", emp:"Insumos Mendoza S.R.L.", tipo:"Insumo", met:"Impedancia", pres:"Bidón 20 L + lisante 1 L", det:2000, precio:62, entrega:"24 h", promo:false, nota:""},
+  {an:"HEM", p:"Control hematológico tri-nivel", emp:"Lab Supply Andina", tipo:"Control", met:"Sangre control estabilizada", pres:"3 niveles × 3×3 mL", det:0, precio:0, entrega:"96 h", promo:false, nota:"Se cotiza por set, con cadena de frío."},
+
+  {an:"HIV", p:"HIV Ag/Ab 4ta generación CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia · antígeno p24 y anticuerpos", pres:"Kit x 100 det.", det:100, precio:6100, entrega:"48 h", promo:false, nota:"Incluye protocolo de repetición por duplicado."},
+
+  {an:"PSA", p:"PSA total y libre CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 100 det.", det:100, precio:4460, entrega:"48 h", promo:false, nota:"El mismo kit resuelve PSA total y PSA libre."},
+
+  {an:"INS", p:"Insulina CLIA", emp:"InmunoSur S.A.", tipo:"Reactivo", met:"Quimioluminiscencia", pres:"Kit x 100 det.", det:100, precio:5680, entrega:"48 h", promo:false, nota:"Sin reactividad cruzada con proinsulina."},
+
+  {an:"UCU", p:"Medios cromogénicos para urocultivo", emp:"Insumos Mendoza S.R.L.", tipo:"Insumo", met:"Cultivo en placa cromogénica", pres:"Caja x 100 placas", det:100, precio:790, entrega:"24 h", promo:false, nota:"Identificación presuntiva por color a las 18 h."}
+];
+
+const EMPRESAS = [...new Set(PROVEEDORES.map(x => x.emp))];
 
 /* ══════════════════════════════════════════════════════════════
    APLICACIÓN
@@ -808,21 +1106,36 @@ CATALOGO.forEach(r => {
 });
 const byCode = Object.fromEntries(CATALOGO.map(r => [r.c, r]));
 
+/* Analitos de la base que tienen productos cargados. El prefijo del
+   código es la clave de mapeo entre el catálogo del proveedor y los
+   registros de la base que ese producto resuelve.                */
+const ANALITOS_PROV = [...new Set(PROVEEDORES.map(x => x.an))].map(an => {
+  const regs = CATALOGO.filter(r => r.c.startsWith(an));
+  return { an, nombre: regs.length ? regs[0].a : an, area: regs.length ? regs[0].ar : "",
+           sin: regs.map(r => r.s).join(" "),   /* los sinónimos de la base también buscan acá */
+           regs: regs.map(r => r.c), n: PROVEEDORES.filter(x => x.an === an).length };
+}).sort((a,b) => a.nombre.localeCompare(b.nombre));
+
 let S;
 function initState(){
   S = {
-    vista:"m1",
+    vista:"s1",
     area:"Todas",
     q:"",
     favoritos:new Set(["GLU-001","HBA-001","TSH-001","HEM-001","ORC-001","COL-001"]),
     orden:["GLU-001","HBA-001","ORC-001"],
-    emitida:{ id:"ORD-2026-0918", seed:true, cs:["GLU-004","HBA-001","ORC-001"], ts:addDays(-1) },
+    emitida:{ id:"ORD-2026-0918", seed:true, cs:["GLU-004","HBA-001","ORC-001","VTD-001","B12-001"], ts:addDays(-1) },
     tab:"red",
     reactivos:REACTIVOS_SEED.map(o => Object.assign({},o)),
     movimientos:MOV_SEED.map(m => Object.assign({},m,{f:addDays(m.dias)})),
     reserva:{ seed:true, r:"Orina completa · tiras reactivas 10 parámetros", lote:"ORC-2411-B", det:30, precio:1240, lab:"Lab. del Valle", loc:"Guaymallén", dias:23, cons:"15 – 30 °C" },
-    resTarget:null
+    resTarget:null,
+    sede:null,                       /* sede de la red que recibe la orden */
+    deriv:{ asign:{}, enviado:false },
+    an:"VTD",                        /* analito abierto en el Servicio 4 */
+    qProv:""
   };
+  ruteoInicial();
 }
 
 /* ── Navegación ─────────────────────────────────────────────── */
@@ -834,7 +1147,7 @@ function irA(v){
 }
 $$(".nav button").forEach(b => b.addEventListener("click", () => irA(b.dataset.view)));
 
-/* ══════════════ MÓDULO 1 ══════════════ */
+/* ══════════════ SERVICIO 1 · RECETA MÉDICA ══════════════ */
 
 function buscar(){
   const q = norm(S.q).trim();
@@ -864,7 +1177,7 @@ function buscar(){
 
 function renderResultados(){
   const rs = buscar();
-  $("#resTitle").textContent = S.q ? "Resultados para “" + S.q + "”" : (S.area === "★" ? "Favoritos" : S.area === "Todas" ? "Todo el catálogo" : S.area);
+  $("#resTitle").textContent = S.q ? "Resultados para “" + S.q + "”" : (S.area === "★" ? "Favoritos" : S.area === "Todas" ? "Toda la base" : S.area);
   $("#resNote").textContent = rs.length + (rs.length === 1 ? " registro" : " registros");
   const box = $("#results");
   if (!rs.length){
@@ -910,7 +1223,7 @@ function renderOrden(){
   $("#btnClear").disabled = !cs.length;
   const box = $("#ordItems");
   if (!cs.length){
-    box.innerHTML = '<div class="empty">Elegí estudios del catálogo para armar la orden.</div>';
+    box.innerHTML = '<div class="empty">Elegí estudios de la base para armar la orden.</div>';
     $("#ordPre").hidden = true;
     return;
   }
@@ -980,8 +1293,9 @@ $("#btnEmit").addEventListener("click", () => {
   const cs = S.orden.slice();
   const id = "ORD-" + hoy.getFullYear() + "-" + String(1000 + Math.floor(Math.random()*8999)).slice(0,4);
   S.emitida = { id, cs, ts:new Date(), seed:false };
+  ruteoInicial();
   mostrarOrden();
-  renderTraza();
+  renderPaciente(); renderDeriv(); renderTraza();
 });
 
 function mostrarOrden(){
@@ -1085,7 +1399,7 @@ function armarHoja(o, p){
     '<header class="ps-head">' +
       '<div class="ps-brand"><div class="mk"><i></i> EISPLUS</div>' +
         '<div class="sys">Laboratorio conectado</div>' +
-        '<div class="via">Emitida por receta electrónica · catálogo maestro de análisis</div></div>' +
+        '<div class="via">Emitida por receta electrónica · base única de análisis</div></div>' +
       '<div class="ps-title"><h1>Orden de análisis</h1><div class="id">' + esc(o.id) + '</div></div>' +
     '</header>' +
 
@@ -1098,7 +1412,7 @@ function armarHoja(o, p){
     '<div class="ps-prep" style="margin-top:8pt;border-left-color:#B3291E;font-size:7.8pt;color:#59616F">' +
       '<b style="color:#B3291E">Documento de demostración.</b> Datos de ejemplo. Sin validez clínica ni legal.</div>' +
 
-    '<section class="ps-sec"><h2>Estudios solicitados <span>· ' + cs.length + ' registros del catálogo, agrupados por muestra</span></h2>' +
+    '<section class="ps-sec"><h2>Estudios solicitados <span>· ' + cs.length + ' registros de la base, agrupados por muestra</span></h2>' +
       tubos + '</section>' +
 
     '<section class="ps-sec"><h2>Preparación del paciente</h2><div class="ps-prep">' + prep + '</div></section>' +
@@ -1113,7 +1427,7 @@ function armarHoja(o, p){
     '</div>' +
 
     '<div class="ps-legal">' +
-      '<span>' + cs.length + ' estudios, 100 % codificados según el catálogo maestro. Ningún ítem en texto libre: el laboratorio recibe el analito, el momento de la toma, el método y el tipo de muestra sin reinterpretación.</span>' +
+      '<span>' + cs.length + ' estudios, 100 % codificados según la base única de análisis. Ningún ítem en texto libre: el laboratorio recibe el analito, el momento de la toma, el método y el tipo de muestra sin reinterpretación.</span>' +
       '<span style="text-align:right;white-space:nowrap">' + esc(o.id) + '<br>' + fDate(o.ts) + '</span>' +
     '</div>';
 }
@@ -1128,7 +1442,7 @@ $("#btnPDF").addEventListener("click", () => {
   setTimeout(() => window.print(), 120);
 });
 
-/* ══════════════ MÓDULO 2 ══════════════ */
+/* ══════════════ COMPLEMENTO · BOLSA DE REACTIVOS ══════════════ */
 
 const sev = d => d <= 15 ? "c" : d <= 30 ? "w" : "";
 const sevPill = d => d <= 15 ? "crit" : d <= 30 ? "warn" : "ok";
@@ -1269,6 +1583,290 @@ $("#btnPubOk").addEventListener("click", () => {
 
 function renderM2(){ renderKpis(); renderOfertas(); renderMovimientos(); }
 
+/* ══════════════ RED · COBERTURA Y DERIVACIÓN ══════════════
+   La cobertura declarada por cada sede es el dato que hace
+   posibles los servicios 2 y 3: cruzada con los ítems de la orden
+   dice dónde se hace el pedido completo y qué hay que derivar.  */
+
+function sedeHace(s, c){
+  const r = byCode[c];
+  if (!r || s.no.includes(c)) return false;
+  return s.areas.includes(r.ar) || (s.extra || []).includes(c);
+}
+function coberturaSede(s, cs){
+  const ok = [], falta = [];
+  cs.forEach(c => (sedeHace(s, c) ? ok : falta).push(c));
+  return { s, ok, falta };
+}
+function sedesRankeadas(cs){
+  return SEDES.map(s => coberturaSede(s, cs))
+    .sort((a,b) => a.falta.length - b.falta.length || a.s.km - b.s.km);
+}
+function candidatos(c, exceptoId){
+  return SEDES.filter(s => s.id !== exceptoId && sedeHace(s, c)).sort((a,b) => a.km - b.km);
+}
+const sedeById = id => SEDES.find(s => s.id === id);
+const km = v => String(v).replace(".", ",");
+
+/* Al emitir una orden nueva, la recibe el nodo activo de la demo y
+   la propuesta de derivación se recalcula desde cero.            */
+function ruteoInicial(){
+  S.sede = (SEDES.find(x => x.mia) || SEDES[0]).id;
+  S.deriv = { asign:{}, enviado:false };
+}
+
+const kpisHTML = ks => ks.map(k =>
+  '<div class="kpi ' + (k[3] || "") + '"><div class="k">' + k[0] + '</div>' +
+  '<div class="v">' + k[1] + '</div><div class="d">' + k[2] + '</div></div>').join("");
+
+/* ══════════════ SERVICIO 2 · PACIENTE ══════════════ */
+
+/* La indicación de cada ítem sale del propio registro: el momento
+   de la toma, el tipo de muestra y el ayuno ya están tipificados. */
+function indicacionItem(r){
+  if (/post carga/.test(r.mom)) return "Extracción a los " + r.mom.split(" ")[0] + " minutos de la carga de 75 g · permanecer en la sede";
+  if (r.t === "orina24")        return "Recolección de orina de 24 horas · anotar hora de inicio y de fin";
+  if (r.c === "UCU-001")        return "Chorro medio en frasco estéril, antes de empezar antibióticos";
+  if (r.c === "CAL-011")        return "Muestra anaerobia · se procesa dentro de los 30 minutos";
+  if (r.c === "PRL-002")        return "Segunda extracción a los 20 minutos, en reposo y decúbito";
+  if (r.c === "PSA-001" || r.c === "PSA-002") return "Sin tacto rectal ni eyaculación en las 48 horas previas";
+  if (r.t === "orina")          return "Primera orina de la mañana, chorro medio";
+  if (r.t === "calc")           return "No requiere muestra: se calcula con los otros resultados";
+  if (r.ay)                     return "Ayuno de " + r.ay + " horas";
+  return "Sin preparación especial";
+}
+
+function renderPaciente(){
+  const o = S.emitida, cs = o.cs;
+  const p = preanalitica(cs);
+  const rank = sedesRankeadas(cs);
+  const full = rank.filter(x => !x.falta.length);
+  const seriada = cs.some(c => /post carga/.test(byCode[c].mom));
+
+  $("#s2Ref").innerHTML = "Orden " + esc(o.id) + "<br>" + fDate(o.ts) + " · " + cs.length + " ítems";
+  $("#s2Count").textContent = cs.length + (cs.length === 1 ? " ítem codificado" : " ítems codificados");
+
+  $("#s2Kpis").innerHTML = kpisHTML([
+    ["Ítems del pedido", cs.length, "cada uno con su código de la base", ""],
+    ["Sedes que cubren todo", full.length + " de " + SEDES.length, "resuelven el pedido completo sin derivar", full.length ? "" : "alert"],
+    ["Ayuno", p.ay ? p.ay + " h" : "No", "el más exigente de los ítems del pedido", ""],
+    ["Tiempo en la sede", seriada ? "≈ 2 h" : "≈ 15 min", seriada ? "hay extracciones seriadas tras la carga" : "una sola extracción", "accent"]
+  ]);
+
+  $("#s2Items").innerHTML = cs.map(c => {
+    const r = byCode[c];
+    return '<div class="pitem"><div class="c">' + r.c + '</div>' +
+      '<div><div class="nm">' + esc(r.a) + '</div>' +
+      '<div class="mo">' + esc(r.mom) + ' · ' + esc(TUBOS[r.t].n) + '</div>' +
+      '<div class="ind"><i></i><span>' + esc(indicacionItem(r)) + '</span></div></div></div>';
+  }).join("");
+
+  $("#s2Prep").innerHTML =
+    '<div class="ln"><b>Ayuno</b><span>' + (p.ay ? p.ay + " horas. Se puede tomar agua." : "No requiere ayuno.") + '</span></div>' +
+    '<div class="ln"><b>Muestras</b><span>' + (p.tubos.length ? p.tubos.map(t => esc(TUBOS[t].n)).join(" · ") : "Sin muestra adicional") + '</span></div>' +
+    p.notas.map(x => '<div class="ln"><b>Tener en cuenta</b><span>' + esc(x) + '</span></div>').join("") +
+    '<div class="ln"><b>Llevá</b><span>Este pedido, el documento y la credencial de la cobertura.</span></div>';
+
+  $("#s2Sedes").innerHTML = rank.map(x => {
+    const sd = x.s, comp = !x.falta.length, sel = S.sede === sd.id;
+    return '<div class="sede ' + (comp ? "full" : "part") + (sel ? " sel" : "") + '">' +
+      '<div class="top"><div><h4>' + esc(sd.n) +
+          (sd.mia ? ' <span class="pill soft">nodo activo</span>' : '') +
+          (sd.alta ? ' <span class="pill">alta complejidad</span>' : '') + '</h4>' +
+        '<div class="loc">' + esc(sd.dir) + ' · ' + esc(sd.loc) + ' · a ' + km(sd.km) + ' km</div></div>' +
+        '<span class="pill ' + (comp ? "ok" : "warn") + '">' +
+          (comp ? "Cubre el pedido completo" : "Cubre " + x.ok.length + " de " + cs.length) + '</span></div>' +
+      '<div class="dat"><span>' + esc(sd.hor) + '</span><span>Tel. ' + esc(sd.tel) + '</span><span>Resultados en ' + esc(sd.pl) + '</span></div>' +
+      (comp ? '' : '<div class="falta">No resuelve en sede: ' + x.falta.map(c => esc(byCode[c].a)).join(" · ") +
+                   '. Se deriva a otro laboratorio de la red, sin repetir la extracción.</div>') +
+      '<div class="act">' + (sel
+        ? '<span class="pill ok">✓ Sede elegida</span>'
+        : '<button class="btn sm' + (comp ? "" : " ghost") + '" data-sede="' + sd.id + '">' +
+          (comp ? "Reservar turno" : "Reservar con derivación") + '</button>') +
+      '</div></div>';
+  }).join("");
+}
+
+$("#s2Sedes").addEventListener("click", e => {
+  const b = e.target.closest("[data-sede]");
+  if (!b) return;
+  S.sede = b.dataset.sede;
+  S.deriv = { asign:{}, enviado:false };
+  renderPaciente(); renderDeriv(); renderTraza();
+  toast("Turno reservado en " + sedeById(S.sede).n);
+});
+
+/* ══════════════ SERVICIO 3 · DERIVACIONES ══════════════ */
+
+function ditem(c, out){
+  const r = byCode[c];
+  return '<div class="ditem' + (out ? " out" : "") + '"><span class="c">' + r.c + '</span>' +
+    '<span><b style="font-weight:600">' + esc(r.a) + '</b> <em>— ' + esc(r.mom) + '</em></span></div>';
+}
+
+function renderDeriv(){
+  const o = S.emitida, cs = o.cs;
+  const rec = sedeById(S.sede) || SEDES.find(x => x.mia);
+  S.sede = rec.id;
+  const x = coberturaSede(rec, cs);
+
+  $("#s3Sedes").innerHTML = SEDES.map(sd =>
+    '<button class="chip" data-recept="' + sd.id + '" aria-pressed="' + (sd.id === rec.id) + '">' + esc(sd.n) + '</button>').join("");
+
+  /* La asignación se conserva mientras siga siendo válida y se
+     recalcula sola cuando cambia la sede o la orden.             */
+  const asign = S.deriv.asign;
+  Object.keys(asign).forEach(c => { if (!x.falta.includes(c)) delete asign[c]; });
+  x.falta.forEach(c => {
+    const cd = candidatos(c, rec.id);
+    if (!asign[c] || !cd.some(sd => sd.id === asign[c])) asign[c] = cd.length ? cd[0].id : null;
+  });
+  const destinos = [...new Set(Object.values(asign).filter(Boolean))];
+
+  $("#s3Ref").innerHTML = "Orden " + esc(o.id) + "<br>" + esc(rec.n);
+  $("#s3Cob").textContent = rec.areas.length + " áreas declaradas · " + rec.no.length + " excepciones";
+
+  $("#s3Kpis").innerHTML = kpisHTML([
+    ["Ítems de la orden", cs.length, "recibidos con código, sin reinterpretar", ""],
+    ["Resuelve en sede", x.ok.length, "según la cobertura que declaró", ""],
+    ["Requiere derivación", x.falta.length, x.falta.length ? "viajan con el mismo código de la base" : "la sede cubre el pedido completo", x.falta.length ? "alert" : ""],
+    ["Laboratorios destino", destinos.length, destinos.length ? destinos.map(id => esc(sedeById(id).n)).join(" · ") : "sin derivación", "accent"]
+  ]);
+
+  $("#s3Ok").innerHTML = x.ok.map(c => ditem(c, false)).join("") ||
+    '<div class="empty" style="padding:14px 0">Esta sede no resuelve ningún ítem de la orden.</div>';
+  $("#s3Falta").innerHTML = x.falta.map(c => ditem(c, true)).join("") ||
+    '<div class="empty" style="padding:14px 0">Nada para derivar.</div>';
+
+  $("#s3Prop").innerHTML = x.falta.length
+    ? x.falta.map(c => {
+        const r = byCode[c], cd = candidatos(c, rec.id);
+        return '<div class="dmatch">' +
+          '<div><div class="nm">' + esc(r.a) + ' <span class="pill code">' + r.c + '</span></div>' +
+          '<div class="mo">' + esc(r.mom) + ' · ' + esc(r.met) + ' · ' + esc(r.mu) + '</div></div>' +
+          (cd.length
+            ? '<div class="cands">' + cd.slice(0,4).map(sd =>
+                '<button class="chip" data-asig="' + r.c + '" data-dest="' + sd.id + '" aria-pressed="' + (asign[r.c] === sd.id) + '">' +
+                esc(sd.n) + ' <b>' + km(sd.km) + ' km · ' + esc(sd.pl) + '</b></button>').join("") + '</div>'
+            : '<div class="falta">Ningún laboratorio de la red declara cobertura para este registro.</div>') +
+          '</div>';
+      }).join("")
+    : '<div class="empty">Esta orden no requiere derivación: la sede resuelve los ' + cs.length + ' ítems.<br>Elegí otra sede receptora arriba para ver el circuito completo.</div>';
+
+  $("#btnDeriv").disabled = !x.falta.length || S.deriv.enviado;
+  $("#btnDeriv").textContent = S.deriv.enviado ? "✓ Derivaciones enviadas" : "Enviar derivaciones";
+
+  $("#s3InfNote").textContent = "Un solo informe con los " + cs.length + " resultados, bajo los mismos códigos con los que se indicaron" +
+    (x.falta.length ? (S.deriv.enviado ? " · derivaciones enviadas" : " · derivaciones pendientes de envío") : "");
+
+  $("#s3Inf").innerHTML = cs.map(c => {
+    const r = byCode[c], propio = x.ok.includes(c);
+    const dest = propio ? null : (asign[c] ? sedeById(asign[c]) : null);
+    const est = propio ? ["Procesado en sede", "ok"]
+              : !dest  ? ["Sin derivador", "crit"]
+              : S.deriv.enviado ? ["Derivado · en proceso", "warn"] : ["Pendiente de envío", ""];
+    return '<div class="infrow"><span class="c">' + r.c + '</span>' +
+      '<span><b style="font-weight:600">' + esc(r.a) + '</b> <span style="color:var(--muted)">— ' + esc(r.mom) + '</span></span>' +
+      '<span class="or">' + (propio ? "En sede · " : "Derivado a · ") + '<b>' + esc(propio ? rec.n : (dest ? dest.n : "—")) + '</b></span>' +
+      '<span class="pill ' + est[1] + '">' + est[0] + '</span></div>';
+  }).join("");
+}
+
+$("#s3Sedes").addEventListener("click", e => {
+  const b = e.target.closest("[data-recept]");
+  if (!b) return;
+  S.sede = b.dataset.recept;
+  S.deriv = { asign:{}, enviado:false };
+  renderPaciente(); renderDeriv(); renderTraza();
+});
+$("#s3Prop").addEventListener("click", e => {
+  const b = e.target.closest("[data-asig]");
+  if (!b) return;
+  S.deriv.asign[b.dataset.asig] = b.dataset.dest;
+  S.deriv.enviado = false;
+  renderDeriv(); renderTraza();
+});
+$("#btnDeriv").addEventListener("click", () => {
+  S.deriv.enviado = true;
+  renderDeriv(); renderTraza();
+  const d = [...new Set(Object.values(S.deriv.asign).filter(Boolean))].length;
+  toast("Derivaciones enviadas a " + d + (d === 1 ? " laboratorio" : " laboratorios") + ", con el código de la base y la identificación de la muestra");
+});
+
+/* ══════════════ SERVICIO 4 · PROVEEDORES ══════════════ */
+
+function prodHTML(x){
+  return '<div class="prod' + (x.promo ? " promo" : "") + '">' +
+    '<div class="top"><div><h4>' + esc(x.p) + '</h4>' +
+      '<div class="emp">' + esc(x.emp) + ' · ' + esc(x.tipo) + '</div></div>' +
+      (x.promo ? '<span class="pill soft">Promocionado</span>' : '') + '</div>' +
+    '<div class="dat"><span>' + esc(x.met) + '</span><span>' + esc(x.pres) + '</span>' +
+      (x.det ? '<span>' + fNum(x.det) + ' determinaciones</span>' : '') +
+      '<span>Entrega ' + esc(x.entrega) + '</span></div>' +
+    '<div class="bot"><div class="pr">' +
+      (x.precio ? '<b>' + fMoney(x.precio) + '</b> por determinación' : '<b>A cotizar</b> según volumen') + '</div>' +
+      '<button class="btn sm ghost" data-cot="' + esc(x.p) + '">Solicitar cotización</button></div>' +
+    (x.nota ? '<div class="nota">' + esc(x.nota) + '</div>' : '') + '</div>';
+}
+
+function renderProv(){
+  const q = norm(S.qProv).trim();
+  const list = q ? ANALITOS_PROV.filter(a => norm(a.nombre + " " + a.an + " " + a.area + " " + a.sin).includes(q)) : ANALITOS_PROV;
+  if (list.length && !list.some(a => a.an === S.an)) S.an = list[0].an;
+  const sel = ANALITOS_PROV.find(a => a.an === S.an);
+
+  $("#s4Ref").innerHTML = PROVEEDORES.length + " productos<br>" + EMPRESAS.length + " empresas proveedoras";
+  $("#s4AnNote").textContent = list.length + (list.length === 1 ? " analito" : " analitos");
+  $("#s4Kpis").innerHTML = kpisHTML([
+    ["Analitos con producto", ANALITOS_PROV.length, "mapeados contra registros de la base", ""],
+    ["Productos cargados", PROVEEDORES.length, "reactivos, controles, calibradores e insumos", ""],
+    ["Promociones activas", PROVEEDORES.filter(x => x.promo).length, "posicionamiento pago por analito", "accent"],
+    ["Consultas del mes", fNum(1284), "bioquímicos entrando por analito, no por marca", ""]
+  ]);
+
+  $("#s4Analitos").innerHTML = list.map(a =>
+    '<button class="anitem" data-an="' + a.an + '" aria-pressed="' + (a.an === S.an) + '">' +
+    '<span><span class="an">' + esc(a.nombre) + '</span>' +
+    '<span class="ar">' + esc(a.area) + ' · ' + a.regs.length + (a.regs.length === 1 ? " registro" : " registros") + '</span></span>' +
+    '<span class="pill">' + a.n + '</span></button>').join("") ||
+    '<div class="empty">Ningún analito coincide con la búsqueda.</div>';
+
+  if (!sel){
+    $("#s4Title").textContent = "Productos";
+    $("#s4Note").textContent = ""; $("#s4Regs").innerHTML = ""; $("#s4Prods").innerHTML = ""; $("#s4Cross").innerHTML = "";
+    return;
+  }
+
+  const prods = PROVEEDORES.filter(x => x.an === sel.an)
+    .sort((a,b) => (b.promo ? 1 : 0) - (a.promo ? 1 : 0) || b.precio - a.precio);
+  $("#s4Title").textContent = sel.nombre;
+  $("#s4Note").textContent = prods.length + (prods.length === 1 ? " producto de " : " productos de ") +
+    [...new Set(prods.map(x => x.emp))].length + " proveedores";
+  $("#s4Regs").innerHTML = sel.regs.map(c =>
+    '<span title="' + esc(byCode[c].a + " · " + byCode[c].mom + " · " + byCode[c].met) + '">' + c + '</span>').join("");
+  $("#s4Prods").innerHTML = prods.map(prodHTML).join("");
+
+  const off = S.reactivos.filter(o => o.an === sel.an && o.det > 0);
+  $("#s4Cross").innerHTML = off.length
+    ? '<div class="cross"><span><b>Excedente publicado en la red.</b> ' +
+        fNum(off.reduce((a,o) => a + o.det, 0)) + ' determinaciones de este analito disponibles en ' +
+        off.length + (off.length === 1 ? ' laboratorio' : ' laboratorios') + ', a precio por uso y sin comprar el kit completo.</span>' +
+      '<button class="btn sm" data-bolsa="1">Ver en la bolsa</button></div>'
+    : '';
+}
+
+$("#s4Analitos").addEventListener("click", e => {
+  const b = e.target.closest("[data-an]");
+  if (!b) return;
+  S.an = b.dataset.an; renderProv();
+});
+$("#qProv").addEventListener("input", e => { S.qProv = e.target.value; renderProv(); });
+$("#s4Prods").addEventListener("click", e => {
+  const b = e.target.closest("[data-cot]");
+  if (b) toast("Consulta enviada al proveedor · " + b.dataset.cot);
+});
+$("#s4Cross").addEventListener("click", e => { if (e.target.closest("[data-bolsa]")) irA("bolsa"); });
+
 /* ══════════════ TRAZABILIDAD ══════════════ */
 
 const hhmm = d => d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:false});
@@ -1290,25 +1888,46 @@ function renderTraza(){
   const rp = byCode[principal];
   const p = preanalitica(o.cs);
 
-  $("#tzRef").innerHTML = "Orden " + esc(o.id) + "<br>Lote " + esc(r.lote);
+  $("#tzRef").innerHTML = "Orden " + esc(o.id) + "<br>Sede " + esc((sedeById(S.sede) || SEDES[0]).n) + "<br>Lote " + esc(r.lote);
 
-  $("#tlAnalisis").innerHTML = [
-    { when: sello(base, 0), what: "Indicación médica",
-      det: "Dra. L. Ibarra selecciona " + esc(rp.a) + " — " + esc(rp.mom) + " desde el desplegable del catálogo. " + o.cs.length + " estudios en total.",
+  const rec = sedeById(S.sede) || SEDES.find(x => x.mia);
+  const cob = coberturaSede(rec, o.cs);
+  const derCode = cob.falta[0];
+  const derSede = derCode ? sedeById(S.deriv.asign[derCode]) : null;
+  const trabado = !!derCode && !S.deriv.enviado;   /* falta enviar la derivación */
+
+  const hilo = [
+    { when: sello(base, 0), what: "Indicación médica · Servicio 1",
+      det: "Dra. L. Ibarra selecciona " + esc(rp.a) + " — " + esc(rp.mom) + " sobre la base única. " + o.cs.length + " estudios en total.",
       key: principal },
     { when: sello(base, 2), what: "Receta electrónica emitida",
       det: "La orden viaja con " + o.cs.length + " códigos únicos. Ningún ítem en texto libre.",
       key: o.id },
-    { when: sello(base, vivo ? 95 : 95), what: "Recepción y rotulado en el laboratorio",
-      det: p.tubos.length + " tubos rotulados según el tipo de muestra de cada registro. Sin consulta al consultorio.",
-      st: vivo ? "pend" : "done" },
+    { when: sello(base, 40), what: "El paciente elige sede · Servicio 2",
+      det: "El sistema cruza los " + o.cs.length + " ítems con la cobertura declarada de cada sede. El paciente reserva en " + esc(rec.n) +
+           " (" + km(rec.km) + " km), que resuelve " + cob.ok.length + " de " + o.cs.length + " en su propio laboratorio." },
+    { when: sello(base, 95), what: "Recepción y rotulado en " + esc(rec.n),
+      det: p.tubos.length + " tubos rotulados según el tipo de muestra de cada registro. Una sola extracción, sin consulta al consultorio.",
+      st: vivo ? "pend" : "done" }
+  ];
+
+  if (derCode && derSede){
+    hilo.push({ when: sello(base, 120), what: "Derivación · Servicio 3",
+      det: cob.falta.length + (cob.falta.length === 1 ? " ítem que la sede no resuelve viaja" : " ítems que la sede no resuelve viajan") +
+           " a " + esc(derSede.n) + " con el mismo registro de la base y la identificación de la muestra. El paciente no vuelve al médico ni se extrae de nuevo.",
+      key: derCode, st: (S.deriv.enviado && !vivo) ? "done" : "pend" });
+  }
+
+  hilo.push(
     { when: sello(base, 150), what: "Procesamiento",
       det: "La determinación se realiza con el lote reservado en la bolsa de reactivos.",
-      key: r.lote, lot: true, st: vivo ? "pend" : "done" },
-    { when: sello(base, 260), what: "Informe de resultados",
-      det: "El resultado se publica bajo el mismo código con el que se indicó, con su unidad y su valor de referencia (" + esc(rp.u) + " · VR " + esc(rp.vr) + ").",
-      key: principal, st: vivo ? "pend" : "done" }
-  ].map(evHTML).join("");
+      key: r.lote, lot: true, st: (vivo || trabado) ? "pend" : "done" },
+    { when: sello(base, 260), what: "Informe único de resultados",
+      det: "Los resultados propios y los derivados se publican en un solo informe, bajo los mismos códigos con los que se indicaron (" +
+           esc(rp.u) + " · VR " + esc(rp.vr) + " para " + esc(rp.a) + ").",
+      key: principal, st: (vivo || trabado) ? "pend" : "done" });
+
+  $("#tlAnalisis").innerHTML = hilo.map(evHTML).join("");
 
   const vto = addDays(r.dias);
   $("#tlReactivo").innerHTML = [
@@ -1358,15 +1977,18 @@ $("#btnReset").addEventListener("click", () => {
   S.tab = "red";
   $$('.tabs button').forEach(x => x.setAttribute("aria-selected", String(x.dataset.tab === "red")));
   ["red","mias","mov"].forEach(t => { $("#tab-" + t).hidden = (t !== "red"); });
+  $("#qProv").value = "";
   renderAll();
-  irA("m1");
+  irA("s1");
   toast("Demo reiniciada");
 });
 
 function renderAll(){
   $("#catCount").textContent = CATALOGO.length;
   $("#labCount").textContent = LABS.length;
-  renderChips(); renderResultados(); renderOrden(); renderM2(); renderTraza();
+  renderChips(); renderResultados(); renderOrden();
+  renderPaciente(); renderDeriv(); renderProv();
+  renderM2(); renderTraza();
 }
 
 initState();
