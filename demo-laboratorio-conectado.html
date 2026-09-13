@@ -264,6 +264,53 @@ table.data tr.new td{background:var(--orange-soft)}
 .toast[hidden]{display:none}
 .toast i{width:7px;height:7px;border-radius:50%;background:var(--orange);display:block;flex:none}
 
+/* ---------- hoja imprimible · orden en PDF ----------
+   Documento en papel: colores literales, no tokens de tema.     */
+#printSheet{display:none}
+#printSheet{color:#12192A;font-family:var(--sans);font-size:9.2pt;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ps-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16pt;border-bottom:2.2pt solid #1B2A4A;padding-bottom:7pt}
+.ps-brand .mk{display:flex;align-items:center;gap:5pt;font-weight:700;letter-spacing:.16em;font-size:8.5pt;color:#1B2A4A}
+.ps-brand .mk i{width:7pt;height:7pt;border-radius:50%;background:#F3931F;display:block}
+.ps-brand .sys{font-size:13pt;font-weight:700;color:#1B2A4A;margin-top:3pt;letter-spacing:-.01em}
+.ps-brand .via{font-size:7.8pt;color:#6B7280;margin-top:1pt}
+.ps-title{text-align:right}
+.ps-title h1{font-size:14pt;font-weight:700;color:#1B2A4A;letter-spacing:-.01em}
+.ps-title .id{font-family:var(--mono);font-size:11.5pt;font-weight:600;color:#E8720C;margin-top:2pt}
+.ps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:.7pt solid #C9D0DD;border-radius:3pt;margin-top:10pt;overflow:hidden}
+.ps-grid div{padding:5pt 8pt;border-right:.7pt solid #E2E7F0;border-bottom:.7pt solid #E2E7F0}
+.ps-grid div:nth-child(3n){border-right:0}
+.ps-grid div:nth-child(n+4){border-bottom:0}
+.ps-grid .k{font-size:6.6pt;letter-spacing:.11em;text-transform:uppercase;color:#7A8496}
+.ps-grid .v{font-size:9.6pt;font-weight:600;margin-top:1pt}
+.ps-sec{margin-top:13pt}
+.ps-sec h2{font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#1B2A4A;border-bottom:.7pt solid #C9D0DD;padding-bottom:3pt;margin-bottom:7pt}
+.ps-sec h2 span{color:#6B7280;font-weight:400;letter-spacing:0;text-transform:none;font-size:8.4pt}
+.ps-tube{break-inside:avoid;page-break-inside:avoid;margin-bottom:8pt}
+.ps-tube .th{display:flex;align-items:center;gap:5pt;font-size:8pt;font-weight:700;color:#1B2A4A;background:#EEF1F7;padding:3pt 7pt;border-radius:2.5pt}
+.ps-tube .th i{width:6pt;height:10pt;border-radius:1.5pt;display:block;border:.5pt solid rgba(0,0,0,.22)}
+.ps-tube .th b{margin-left:auto;font-weight:600;color:#6B7280}
+.ps-item{display:grid;grid-template-columns:52pt 1fr;gap:8pt;padding:4.5pt 7pt 4.5pt 0;border-bottom:.5pt dotted #D3D9E4}
+.ps-item:last-child{border-bottom:0}
+.ps-item .c{font-family:var(--mono);font-size:8.2pt;font-weight:600;color:#1B2A4A;padding-top:.5pt}
+.ps-item .n{font-size:9.6pt;font-weight:600}
+.ps-item .d{font-size:8pt;color:#59616F;margin-top:.5pt}
+.ps-item .d em{font-style:normal;color:#8A93A3}
+.ps-prep{border:.7pt solid #C9D0DD;border-left:2.2pt solid #F3931F;border-radius:3pt;padding:7pt 10pt;font-size:8.6pt;line-height:1.5}
+.ps-prep b{color:#1B2A4A}
+.ps-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20pt;margin-top:16pt;break-inside:avoid}
+.ps-bc .lbl{font-size:6.6pt;letter-spacing:.11em;text-transform:uppercase;color:#7A8496;margin-bottom:3pt}
+.ps-bc .num{font-family:var(--mono);font-size:8pt;letter-spacing:.22em;text-align:center;margin-top:2pt;color:#12192A}
+.ps-sign{text-align:center;min-width:150pt}
+.ps-sign .ln{border-bottom:.7pt solid #12192A;height:30pt}
+.ps-sign .cap{font-size:7.4pt;color:#6B7280;margin-top:3pt}
+.ps-legal{margin-top:12pt;padding-top:6pt;border-top:.7pt solid #C9D0DD;font-size:7.2pt;color:#7A8496;line-height:1.45;display:flex;justify-content:space-between;gap:14pt}
+@media print{
+  html,body{background:#fff !important;margin:0}
+  .app,.overlay,.toast{display:none !important}
+  #printSheet{display:block}
+  @page{size:A4 portrait;margin:13mm 14mm}
+}
+
 @media (prefers-reduced-motion:no-preference){
   .res,.offer,.chip,.btn,.addbtn{transition:background-color .13s ease,border-color .13s ease,color .13s ease}
 }
@@ -465,8 +512,8 @@ table.data tr.new td{background:var(--orange-soft)}
       <div style="margin-top:16px;padding:13px 16px;background:var(--surface-2);border-radius:var(--r);font-size:12.5px;color:var(--ink-2)" id="ordenPre"></div>
     </div>
     <div class="modal-f">
-      <span class="note" style="font-size:11.5px;color:var(--muted)">La orden viaja por la plataforma de receta electrónica con los códigos, no con el texto.</span>
-      <span style="display:flex;gap:9px"><button class="btn ghost sm" data-close>Cerrar</button><button class="btn sm" id="btnVerTraza">Ver trazabilidad</button></span>
+      <span class="note" style="font-size:11.5px;color:var(--muted)">La orden viaja por la plataforma con los códigos, no con el texto.<br>El PDF es la copia en papel para el paciente y el laboratorio.</span>
+      <span style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn ghost sm" data-close>Cerrar</button><button class="btn ghost sm" id="btnVerTraza">Ver trazabilidad</button><button class="btn" id="btnPDF">Descargar PDF</button></span>
     </div>
   </div>
 </div>
@@ -553,6 +600,9 @@ table.data tr.new td{background:var(--orange-soft)}
 </div>
 
 <div class="toast" id="toast" hidden><i></i><span id="toastTxt"></span></div>
+
+<!-- Hoja A4 de la orden. Sólo visible al imprimir o guardar como PDF. -->
+<div id="printSheet" aria-hidden="true"></div>
 
 <script>
 /* ══════════════════════════════════════════════════════════════
@@ -964,9 +1014,112 @@ function mostrarOrden(){
     (p.ay ? "Ayuno de " + p.ay + " horas. " : "No requiere ayuno. ") +
     (p.notas.length ? p.notas.map(esc).join(" ") : "Sin preparación especial.");
 
+  armarHoja(o, p);
   abrir("#ovOrden");
 }
 $("#btnVerTraza").addEventListener("click", () => { cerrar(); irA("tz"); });
+
+/* ── Hoja A4 de la orden y salida a PDF ─────────────────────────
+   Se arma al emitir y queda oculta hasta que se imprime o se
+   guarda como PDF, que es lo que hace el botón Descargar PDF.   */
+
+const PACIENTE = { n:"M. A. Fernández", doc:"DNI 24.918.337", edad:"54 años · F", cob:"OSEP · Afil. 3120-44" };
+const PROFESIONAL = { n:"Dra. L. Ibarra", mp:"MP 8421", esp:"Clínica médica" };
+
+/* Code 39: cada carácter son 9 elementos alternados bar/espacio,
+   tres de ellos anchos. Codifica el número de orden tal cual.   */
+const C39 = {
+  "0":"nnnwwnwnn","1":"wnnwnnnnw","2":"nnwwnnnnw","3":"wnwwnnnnn","4":"nnnwwnnnw",
+  "5":"wnnwwnnnn","6":"nnwwwnnnn","7":"nnnwnnwnw","8":"wnnwnnwnn","9":"nnwwnnwnn",
+  "A":"wnnnnwnnw","B":"nnwnnwnnw","C":"wnwnnwnnn","D":"nnnnwwnnw","E":"wnnnwwnnn",
+  "F":"nnwnwwnnn","G":"nnnnnwwnw","H":"wnnnnwwnn","I":"nnwnnwwnn","J":"nnnnwwwnn",
+  "K":"wnnnnnnww","L":"nnwnnnnww","M":"wnwnnnnwn","N":"nnnnwnnww","O":"wnnnwnnwn",
+  "P":"nnwnwnnwn","Q":"nnnnnnwww","R":"wnnnnnwwn","S":"nnwnnnwwn","T":"nnnnwnwwn",
+  "U":"wwnnnnnnw","V":"nwwnnnnnw","W":"wwwnnnnnn","X":"nwnnwnnnw","Y":"wwnnwnnnn",
+  "Z":"nwwnwnnnn","-":"nwnnnnwnw",".":"wwnnnnwnn"," ":"nwwnnnnwn","*":"nwnnwnwnn"
+};
+function barcode39(texto){
+  const s = "*" + texto.toUpperCase() + "*";
+  const ANGOSTO = 1, ANCHO = 2.6, ALTO = 34;
+  let x = 0, rects = [];
+  for (const ch of s){
+    const pat = C39[ch];
+    if (!pat) continue;
+    for (let j = 0; j < 9; j++){
+      const w = pat[j] === "w" ? ANCHO : ANGOSTO;
+      if (j % 2 === 0) rects.push('<rect x="' + x.toFixed(2) + '" y="0" width="' + w.toFixed(2) + '" height="' + ALTO + '" fill="#12192A"/>');
+      x += w;
+    }
+    x += ANGOSTO;
+  }
+  return '<svg viewBox="0 0 ' + x.toFixed(2) + ' ' + ALTO + '" width="' + (x * 0.42).toFixed(1) + 'pt" height="30pt" ' +
+         'preserveAspectRatio="none" role="img" aria-label="Código de barras ' + esc(texto) + '">' + rects.join("") + '</svg>';
+}
+
+function armarHoja(o, p){
+  const cs = o.cs;
+  const ordenTubos = ["suero","edta","citrato","fluoruro","heparina","orina","orina24","calc"];
+
+  const celda = (k,v) => '<div><div class="k">' + k + '</div><div class="v">' + esc(v) + '</div></div>';
+
+  const tubos = ordenTubos.filter(t => cs.some(c => byCode[c].t === t)).map(t => {
+    const items = cs.filter(c => byCode[c].t === t);
+    return '<div class="ps-tube"><div class="th"><i style="background:' + TUBOS[t].col + '"></i>' +
+      esc(TUBOS[t].n) + '<b>' + items.length + (items.length === 1 ? " determinación" : " determinaciones") + '</b></div>' +
+      items.map(c => { const r = byCode[c];
+        return '<div class="ps-item"><div class="c">' + r.c + '</div><div><div class="n">' + esc(r.a) + '</div>' +
+          '<div class="d">' + esc(r.mom) + ' — ' + esc(r.met) + ' — ' + esc(r.u) + ' · VR ' + esc(r.vr) +
+          ' <em>— NBU ' + r.nbu + ' · LOINC ' + r.loinc + '</em></div></div></div>';
+      }).join("") + '</div>';
+  }).join("");
+
+  const prep = (p.ay ? "<b>Ayuno de " + p.ay + " horas.</b> " : "<b>No requiere ayuno.</b> ") +
+    (p.notas.length ? p.notas.map(esc).join(" ") + " " : p.ay ? "" : "Sin preparación especial. ") +
+    "Concurrir con esta orden y el documento de identidad.";
+
+  $("#printSheet").innerHTML =
+    '<header class="ps-head">' +
+      '<div class="ps-brand"><div class="mk"><i></i> EISPLUS</div>' +
+        '<div class="sys">Laboratorio conectado</div>' +
+        '<div class="via">Emitida por receta electrónica · catálogo maestro de análisis</div></div>' +
+      '<div class="ps-title"><h1>Orden de análisis</h1><div class="id">' + esc(o.id) + '</div></div>' +
+    '</header>' +
+
+    '<div class="ps-grid">' +
+      celda("Paciente", PACIENTE.n) + celda("Documento", PACIENTE.doc) + celda("Edad y sexo", PACIENTE.edad) +
+      celda("Cobertura", PACIENTE.cob) + celda("Profesional solicitante", PROFESIONAL.n + " · " + PROFESIONAL.mp + " · " + PROFESIONAL.esp) +
+      celda("Emisión", fDate(o.ts) + " · " + hhmm(o.ts)) +
+    '</div>' +
+
+    '<div class="ps-prep" style="margin-top:8pt;border-left-color:#B3291E;font-size:7.8pt;color:#59616F">' +
+      '<b style="color:#B3291E">Documento de demostración.</b> Datos de ejemplo. Sin validez clínica ni legal.</div>' +
+
+    '<section class="ps-sec"><h2>Estudios solicitados <span>· ' + cs.length + ' registros del catálogo, agrupados por muestra</span></h2>' +
+      tubos + '</section>' +
+
+    '<section class="ps-sec"><h2>Preparación del paciente</h2><div class="ps-prep">' + prep + '</div></section>' +
+
+    '<div class="ps-foot">' +
+      '<div class="ps-bc"><div class="lbl">Número de orden</div>' + barcode39(o.id) +
+        '<div class="num">' + esc(o.id) + '</div></div>' +
+      '<div class="ps-sign"><div class="ln"></div><div class="cap">Firma y sello del profesional</div></div>' +
+    '</div>' +
+
+    '<div class="ps-legal">' +
+      '<span>' + cs.length + ' estudios, 100 % codificados según el catálogo maestro. Ningún ítem en texto libre: el laboratorio recibe el analito, el momento de la toma, el método y el tipo de muestra sin reinterpretación.</span>' +
+      '<span style="text-align:right;white-space:nowrap">' + esc(o.id) + '<br>' + fDate(o.ts) + '</span>' +
+    '</div>';
+}
+
+$("#btnPDF").addEventListener("click", () => {
+  const previo = document.title;
+  document.title = "Orden " + S.emitida.id + " - " + PACIENTE.n.replace(/\./g,"");
+  const restaurar = () => { document.title = previo; window.removeEventListener("afterprint", restaurar); };
+  window.addEventListener("afterprint", restaurar);
+  setTimeout(restaurar, 60000);
+  toast("Se abre el diálogo de impresión: elegí “Guardar como PDF” como destino");
+  setTimeout(() => window.print(), 120);
+});
 
 /* ══════════════ MÓDULO 2 ══════════════ */
 
@@ -1111,7 +1264,7 @@ function renderM2(){ renderKpis(); renderOfertas(); renderMovimientos(); }
 
 /* ══════════════ TRAZABILIDAD ══════════════ */
 
-const hhmm = d => d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"});
+const hhmm = d => d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:false});
 const sello = (base, min) => { const d = new Date(base.getTime() + min*60000); return fDate(d) + " · " + hhmm(d); };
 
 function evHTML(e){
