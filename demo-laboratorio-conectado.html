@@ -300,9 +300,13 @@ table.data tr.new td{background:var(--orange-soft)}
 .ps-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20pt;margin-top:16pt;break-inside:avoid}
 .ps-bc .lbl{font-size:6.6pt;letter-spacing:.11em;text-transform:uppercase;color:#7A8496;margin-bottom:3pt}
 .ps-bc .num{font-family:var(--mono);font-size:8pt;letter-spacing:.22em;text-align:center;margin-top:2pt;color:#12192A}
-.ps-sign{text-align:center;min-width:150pt}
-.ps-sign .ln{border-bottom:.7pt solid #12192A;height:30pt}
-.ps-sign .cap{font-size:7.4pt;color:#6B7280;margin-top:3pt}
+.ps-sign{text-align:center;min-width:175pt}
+.ps-sign .ln{border-bottom:.7pt solid #12192A;height:28pt}
+.ps-sign .cap{font-size:6.6pt;letter-spacing:.1em;text-transform:uppercase;color:#7A8496;margin-top:3pt}
+.ps-stamp{border:.7pt solid #1B2A4A;border-radius:2.5pt;padding:5pt 11pt 6pt;margin-top:5pt;line-height:1.28}
+.ps-stamp .nm{font-size:9.8pt;font-weight:700;color:#1B2A4A}
+.ps-stamp .mp{font-family:var(--mono);font-size:8.4pt;font-weight:600;margin-top:1.5pt;letter-spacing:.02em}
+.ps-stamp .es{font-size:7.6pt;color:#59616F;margin-top:1pt}
 .ps-legal{margin-top:12pt;padding-top:6pt;border-top:.7pt solid #C9D0DD;font-size:7.2pt;color:#7A8496;line-height:1.45;display:flex;justify-content:space-between;gap:14pt}
 @media print{
   html,body{background:#fff !important;margin:0}
@@ -1102,7 +1106,10 @@ function armarHoja(o, p){
     '<div class="ps-foot">' +
       '<div class="ps-bc"><div class="lbl">Número de orden</div>' + barcode39(o.id) +
         '<div class="num">' + esc(o.id) + '</div></div>' +
-      '<div class="ps-sign"><div class="ln"></div><div class="cap">Firma y sello del profesional</div></div>' +
+      '<div class="ps-sign"><div class="ln"></div><div class="cap">Firma del profesional</div>' +
+        '<div class="ps-stamp"><div class="nm">' + esc(PROFESIONAL.n) + '</div>' +
+        '<div class="mp">' + esc(PROFESIONAL.mp) + '</div>' +
+        '<div class="es">' + esc(PROFESIONAL.esp) + '</div></div></div>' +
     '</div>' +
 
     '<div class="ps-legal">' +
